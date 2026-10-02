@@ -839,6 +839,22 @@ that matter most:
 | Long run | Air 2–3 mm above U8 in the closed housing, ≥ 2 h at full volume | ≤ 53 °C at 23 °C room | 65 °C − (35 °C − room); above 53 °C → `enable_ecc: true` |
 | Long run | Amplifier faults after 30 min full load | GLOBAL_FAULT1 / CHAN_FAULT = 0 | |
 
+## Rev A2 ordered (2 Oct 2026)
+
+| | |
+|---|---|
+| Order | JLCPCB **W2026100221436791**, placed 2 Oct 2026 |
+| Bare boards | **Y5-13602167A** — 5 pieces, 4 layers, stack-up **JLC04161H-7628**, surface finish **ENIG**, via covering **Epoxy Filled & Capped** (points 2 and 6 below) |
+| Assembly | **SMT026100262223** — 2 boards, Standard PCBA, assembled on both sides |
+| Total | **€415.24**, including shipping and import charges |
+| Assembly preview | all 31 changed or new parts checked on 2 Oct 2026; U18, U16, U5 and Q4 correct without manual adjustment after the CPL correction ("Four rotations corrected after the JLCPCB preview"); Y1 placed by the order remark (point 7 below) |
+| Part substitution | R35 = **C100510** (LIZ Elec CR0402FF6800G, 680 Ω 1 %) instead of C25130, ordered |
+| Still open at JLCPCB | two confirmations in the order process: **Production file** and **Parts placement** |
+
+The order was made from the design files tagged `rev-a2.1` in this repository. The tag
+`rev-a2-ordered` marks the state with this section added and stands on the **same design and
+manufacturing files** as `rev-a2.1`; only the documentation differs.
+
 ## Before you order: the seven things to get right
 
 Each of these has its own section with the evidence; this is the short list to hand to a

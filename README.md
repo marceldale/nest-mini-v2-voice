@@ -8,19 +8,18 @@ that was changed, and why, is in [CHANGES.md](CHANGES.md); the people and projec
 stands on are named under [Credits](#credits).
 
 > [!WARNING]
-> **Status (1 Oct 2026): rev A2 in preparation.** Every change has been verified on paper only
-> — netlist, ERC, DRC with schematic parity, datasheets, firmware source. **Nothing has been
-> checked on hardware, and no board has ever been fabricated from these files.** The rev A2
-> manufacturing set exists in `fertigung/` and is complete, but two checks are still open before
-> an order: the rotations of 31 parts in the fabricator's assembly preview, and the two fixed
-> order options (via filling, ENIG). Until bring-up results are published here, **do not
-> manufacture from these files.** Watch the repository for updates.
+> **Status (2 Oct 2026): rev A2 ordered (2 boards, JLCPCB, 2 Oct 2026).** Every change has been
+> verified on paper only — netlist, ERC, DRC with schematic parity, datasheets, firmware source.
+> The rotations of all 31 changed or new parts were checked in JLCPCB's assembly preview, and the
+> board was ordered with the two fixed options (via filling, ENIG). **Nothing has been checked on
+> hardware yet.** Until bring-up results are published here, **do not manufacture from these
+> files.** Watch the repository for updates.
 
 > [!NOTE]
-> This status line changes when the first boards are ordered, and again when they have been
-> brought up. Both steps are tracked in the roadmap below.
+> This status line changes again when the boards have been brought up. The steps are tracked in
+> the roadmap below; the order itself is in [CHANGES.md](CHANGES.md#rev-a2-ordered-2-oct-2026).
 
-![Status](https://img.shields.io/badge/status-rev%20A2%20in%20preparation-orange)
+![Status](https://img.shields.io/badge/status-rev%20A2%20ordered-yellow)
 ![Licence](https://img.shields.io/badge/hardware-CERN--OHL--S%20v2-blue)
 
 ## What it is
@@ -91,10 +90,10 @@ prototype stage (see status above). No affiliation with Google.
 - [x] Rev A2 silkscreen: pin-1 marks, test point labels, revision and date; no DRC warnings left
 - [x] Independent audit of rev A2; critical and layout-relevant findings fixed (CHANGES.md section 10)
 - [x] Rev A2 manufacturing files regenerated after the audit fixes (`fertigung/`, 1 Oct 2026)
-- [ ] Rotation check of the 31 changed or new parts in the fabricator's assembly preview (date of
-      the preview — filled in after the check)
+- [x] Rotation check of the 31 changed or new parts in the fabricator's assembly preview
+      (JLCPCB preview, 2 Oct 2026; U18, U16, U5, Q4 corrected in the CPL beforehand, Y1 by order remark)
 - [ ] ESP32-side flasher for the XMOS image (until then: first image over J4 with an XTAG4)
-- [ ] Rev A2 ordered (number of boards, manufacturer, date — filled in on ordering)
+- [x] Rev A2 ordered: 2 assembled boards (5 bare PCBs), JLCPCB, 2 Oct 2026
 - [ ] Bring-up: resistance check, power rails, XMOS flash via ESP32
 - [ ] Audio, microphones, echo cancellation, touch, LEDs
 - [ ] Wi-Fi sensitivity against a reference device
