@@ -12,7 +12,7 @@ stands on are named under [Credits](#credits).
 > — netlist, ERC, DRC with schematic parity, datasheets, firmware source. **Nothing has been
 > checked on hardware, and no board has ever been fabricated from these files.** The rev A2
 > manufacturing set exists in `fertigung/` and is complete, but two checks are still open before
-> an order: the rotations of fifteen parts in the fabricator's assembly preview, and the two
+> an order: the rotations of 31 parts in the fabricator's assembly preview, and the two fixed
 > order options (via filling, ENIG). Until bring-up results are published here, **do not
 > manufacture from these files.** Watch the repository for updates.
 
@@ -91,9 +91,10 @@ prototype stage (see status above). No affiliation with Google.
 - [x] Rev A2 silkscreen: pin-1 marks, test point labels, revision and date; no DRC warnings left
 - [x] Independent audit of rev A2; critical and layout-relevant findings fixed (CHANGES.md section 10)
 - [x] Rev A2 manufacturing files regenerated after the audit fixes (`fertigung/`, 1 Oct 2026)
-- [ ] Rotation check of the 24 changed or new parts in the fabricator's assembly preview
+- [ ] Rotation check of the 31 changed or new parts in the fabricator's assembly preview (date of
+      the preview — filled in after the check)
 - [ ] ESP32-side flasher for the XMOS image (until then: first image over J4 with an XTAG4)
-- [ ] Rev A2 ordered (boards, manufacturer, date — filled in on ordering)
+- [ ] Rev A2 ordered (number of boards, manufacturer, date — filled in on ordering)
 - [ ] Bring-up: resistance check, power rails, XMOS flash via ESP32
 - [ ] Audio, microphones, echo cancellation, touch, LEDs
 - [ ] Wi-Fi sensitivity against a reference device
@@ -116,7 +117,7 @@ their respective owners and are used here only to say what this board is compati
 | Hardware — schematic, layout, our footprints, manufacturing data | **CERN-OHL-S v2** |
 | ESPHome YAML, Python tools, documentation | **MIT** |
 | XMOS firmware image under `firmware/xmos/` | **XMOS Public Licence v1** — not ours |
-| ESPHome component `tas58xx` under `firmware/esphome/components/` | **GPL-3.0-or-later** — © mrtoy-me, based on work by Andriy Malyshenko (sonocotta); two lines patched by us, see [`firmware/esphome/PATCH.md`](firmware/esphome/PATCH.md) |
+| ESPHome component `tas58xx` under `firmware/esphome/components/` | **GPL-3.0-or-later** — © mrtoy-me, based on work by Andriy Malyshenko (sonocotta); patched by us (start-up order, loop bandwidth), see [`firmware/esphome/PATCH.md`](firmware/esphome/PATCH.md) |
 | KiCad library excerpts in `lib_lokal/` | **CC-BY-SA-4.0**, © KiCad Libraries Contributors |
 | Parts of `lib_lokal/` (vendor footprints and symbols) | **terms not established** — see below |
 
@@ -221,8 +222,11 @@ ring board's first LED is index 6 as far as the firmware is concerned.
 | 4 | `GND` | | 9 | `+14V` |
 | 5 | `GND` | | 10 | `+14V` |
 
-**This assignment is inherited from the designer's prototype and has not been measured against an
-original H2C.** Measure it before the first power-up — see "Open points" in `CHANGES.md`.
+**Confirmed pin for pin against an independent design:** the schematic of
+[Onju Voice](https://github.com/justLV/onju-voice) (`hardware/Onju-Home.SchDoc`, a replacement
+board for the same Nest Mini 2nd gen) has the same ten-way connector as J1, and all ten pins
+agree — 1 and 3–6 `GND`, 2 `MUTE`, 7–10 `14V`. Metering it on an original is optional; the quick
+check is in `CHANGES.md` ("POWER_IN1: the pinout is now confirmed against a second source").
 
 ### J4 — XMOS JTAG pad field, 2×5, 1.27 mm pitch, unpopulated
 
@@ -261,7 +265,7 @@ produce it and the checks each one prints — nothing in that directory is edite
 below).
 
 Before ordering, these are the points to watch; the full list with the evidence is under
-["Before you order" in CHANGES.md](CHANGES.md#before-you-order-the-six-things-to-get-right):
+["Before you order" in CHANGES.md](CHANGES.md#before-you-order-the-seven-things-to-get-right):
 
 * **0.10 mm minimum track width** for the two UART signals — fabricable at JLCPCB without a
   surcharge, but not everywhere.
@@ -276,21 +280,27 @@ Before ordering, these are the points to watch; the full list with the evidence 
 
 Placement corrections by hand are **no longer needed**: rev A1 shipped a CPL with 19 of them, and
 rev A2 fixes the footprint origins themselves instead (X1, J5, J1), so the CPL exporter
-writes a correct CPL directly; the remaining fifteen corrections are applied automatically.
+writes a correct CPL directly; the remaining nineteen corrections are applied automatically.
 
 **Two things are still open**, both for the operator and both listed in
 [`fertigung/DREHLAGEN_PRUEFEN.md`](fertigung/DREHLAGEN_PRUEFEN.md):
 
-1. **24 parts need checking in JLCPCB's assembly preview** — those whose LCSC number changed
+1. **31 parts need checking in JLCPCB's assembly preview** — those whose LCSC number changed
    since rev A1 (U5, LED2–LED5, J6, R76, R77, R80, X1, J1) or that are new (U16, U18, U19, Q4),
-   and nine from the audit fixes (L1, L2 with a new footprint; C20, C100 with new numbers;
-   C105–C109 new, all unpolarised).
+   nine from the audit fixes (L1, L2 with a new footprint; C20, C100 with new numbers;
+   C105–C109 new, all unpolarised), and seven from the pin audit and the order (Y1 with a new number — the one
+   where rotation matters, a 90° error puts the crystal on the ground pads, and it has no model in
+   the preview, so the order carries the remark "Y1 orientation per silkscreen pin-1 corner mark
+   (top-left)"; R72, C17, C63, C98, R35 with new numbers; R81 new). The first preview on 2 Oct 2026
+   found U18 and U16 turned; a recomputation of all 42 polarised parts against the fabricator's
+   footprints corrected four rotations (U18, U16, U5, Q4) — see `CHANGES.md`. C110 is not fitted and not in the CPL.
    For them the fabricator's own footprint decides the zero orientation, and that has not been
    compared yet. Everything else was checked in rev A1 and has not moved since.
-2. **Two order options have to be selected** and are not in the Gerbers: via covering
-   ***Epoxy Filled & Capped*** (vias reach into 23 pads) and surface finish
-   **ENIG** (0.40 mm pitch, QFN thermal pads, the J4 spring-contact field, test points and touch
-   electrodes). Both are in "Before you order" in `CHANGES.md`.
+2. **Two order options are fixed for this board** and have to be selected because they are not in
+   the Gerbers: via covering ***Epoxy Filled & Capped*** (vias reach into 23 pads) and surface
+   finish **ENIG** — decided, not optional (0.40 mm pitch, QFN thermal pads, the J4
+   spring-contact field, test points and touch electrodes). Both are in "Before you order" in
+   `CHANGES.md`.
 
 The upstream design and its own documents are at
 [iMike78/nest-mini-drop-in-pcb](https://github.com/iMike78/nest-mini-drop-in-pcb).

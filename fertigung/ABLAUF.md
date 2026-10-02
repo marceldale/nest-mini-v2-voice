@@ -97,12 +97,12 @@ kicad-cli pcb export pos --format csv --units mm --side both --exclude-dnp --out
    refilled equal. One zone (`+14V` on In2) can alternate between 147.28 and 147.32 mm² from one fill
    to the next — a fill-iteration effect, 0.03 %; the Gerbers are made from the saved state. (After the audit
    fixes of 1 Oct 2026 the total was 11 596.11 mm²; H6 perforates the `VDD` area on In2 under U10.)
-3. Read `DREHLAGEN_PRUEFEN.md` and work through the **15 + 9 + 6 new rows** (rev A1 → A2, the
-   audit fixes and the pin-audit fixes; Y1 is the one where rotation matters) in JLCPCB's
+3. Read `DREHLAGEN_PRUEFEN.md` and work through the **15 + 9 + 7 new rows** (rev A1 → A2, the
+   audit fixes and the pin-audit fixes; Y1 is the one where rotation matters, and it has no model in the preview) in JLCPCB's
    assembly preview. Those are the parts whose LCSC number changed since rev A1, or that are new;
    for them the fabricator's own footprint decides the zero orientation, and nobody has compared
    it yet.
-4. Read "Before you order" in `CHANGES.md` — six points, including the 0.10 mm track width and
+4. Read "Before you order" in `CHANGES.md` — seven points, including the 0.10 mm track width and
    the `IQ` variant of U11.
 5. **Select the two order options.** They are not in the Gerbers; nobody will ask twice:
    * **Via covering: *Epoxy Filled & Capped*.** The board vias reach into **23 pads (58 vias, all same-net)**, measured after the pin-audit fixes of 2 Oct 2026: the via centre lies inside 14 pads — J6.11, R79.2, R80.1 (signal), C99.1, U11.6, L1.2 (supply), C47.2 and C60.2 (GND, on F.Cu above the U10 paddle, two of the H6 vias), and the large pads of U8 (9 vias) and U10 (32 vias: 16 GND, 4 in each VDD paddle) — and in 9 more pads part of the drilled hole reaches into the solder-mask opening (C65.1, J1.B6, J4.4, J4.6, LED2.1, TP21, TP22, U19.2, U19.4).

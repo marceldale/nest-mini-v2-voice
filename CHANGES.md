@@ -630,7 +630,8 @@ Changes compared with `7de6eec6`:
 This file is derived from upstream `MiciMike.yaml`, which is unchanged in this repository.
 
 * **Wi-Fi:** DHCP instead of a fixed IP. All credentials are read via `!secret` from
-  `secrets.yaml`, which is not in the repository.
+  `secrets.yaml`, which is not in the repository; `secrets.example.yaml` lists every key the YAML
+  uses (`ssid`, `wifi_pass`, `api_key`) with placeholders — copy it to `secrets.yaml` and fill it in.
 * **Touch:** `esp32_touch` replaced by the **MPR121** component (address 0x5A, channels 0/1/2).
 * **I²S:**
   * `i2s_dout_pin` GPIO11 → **GPIO10**, which goes to the XU316 via R24 (see C3).
@@ -838,11 +839,11 @@ that matter most:
 | Long run | Air 2–3 mm above U8 in the closed housing, ≥ 2 h at full volume | ≤ 53 °C at 23 °C room | 65 °C − (35 °C − room); above 53 °C → `enable_ecc: true` |
 | Long run | Amplifier faults after 30 min full load | GLOBAL_FAULT1 / CHAN_FAULT = 0 | |
 
-## Before you order: the six things to get right
+## Before you order: the seven things to get right
 
 Each of these has its own section with the evidence; this is the short list to hand to a
 fabricator or to check in the order form. Points 2 and 6 are **order options that have to be
-selected**, not just things to check.
+selected**, and point 7 is **a remark to enter in the order form**, not just things to check.
 
 | # | What | Why it matters |
 |---|---|---|
@@ -853,8 +854,9 @@ selected**, not just things to check.
 | 5 | **J1 needs confirming by hand** | The USB-C receptacle (Molex 1054500101, LCSC C134092) is stocked but JLCPCB flags it "process difficult" in the BOM check, where it has to be confirmed manually. No stocked alternative fits the footprint. |
 
 | 6 | **Surface finish: ENIG**, not HASL | Decision of 1 Oct 2026. Five things on this board want a flat, planar finish: the **0.40 mm pitch** of U8, U10, U15 and U6, where HASL's uneven solder domes bridge; the **QFN thermal pads**, which need to sit flat; the **J4 spring-contact pad field**, where an XTAG adapter presses onto bare pads and HASL's bumps give unreliable contact; the **eighteen test points**, measured with a probe tip; and the **three touch electrodes** on B.Cu, which are large bare-copper rings that have to stay planar and corrosion-free for the MPR121 to see a stable capacitance. ENIG gives all five; HASL gives none of them. |
+| 7 | **Order remark: `Y1 orientation per silkscreen pin-1 corner mark (top-left).`** | EasyEDA has no model for Y1 (C49158179, "Component not found", 2 Oct 2026), so the assembly preview shows only a placeholder and the part is placed by hand. A 90° error puts the crystal on the ground pads. The silkscreen corner mark and pad 1 (`XTAL_N`) are both at the top left, measured from the board. See "Y1 has no model in the JLCPCB preview". |
 
-Beyond those six: the stack-up is set to **JLCPCB JLC04161H-7628** (1.6 mm, 4 layers, 0.5 oz
+Beyond those seven: the stack-up is set to **JLCPCB JLC04161H-7628** (1.6 mm, 4 layers, 0.5 oz
 inner copper).
 
 **What the two options cost is not published.** JLCPCB states the technical terms for both on
@@ -1605,9 +1607,30 @@ with the ground pins. Pin 1 (`XTAL_N`) must be at the top left (see
 `production/jlcpcb/ROTATION_CHECK.md`). Kept as it is: the orientation is checked by hand in the
 assembly preview against the target table.
 
-Since the pin-audit fix H1 (2 Oct 2026) Y1 is the JLYE Y201640MDBCX (C49158179). Whether the preview
-has a model for it could not be checked from here (the EasyEDA API refuses scripted requests); the
-row is listed in `fertigung/DREHLAGEN_PRUEFEN.md` either way. Pin 1 (`XTAL_N`) stays top left.
+Since the pin-audit fix H1 (2 Oct 2026) Y1 is the JLYE Y201640MDBCX (C49158179). EasyEDA has no
+model for that number either ("Component not found", checked 2 Oct 2026), and the JLCPCB preview
+shows only a placeholder. Pin 1 (`XTAL_N`) stays top left, at the corner with the silkscreen corner
+mark (measured from the board: mark 117.03–119.57 / 67.83–70.77 mm, pad 1 at 117.75 / 68.60). The
+order form carries the remark **"Y1 orientation per silkscreen pin-1 corner mark (top-left)."**
+
+### Four rotations corrected after the JLCPCB preview (2 Oct 2026)
+
+The order was stopped when the assembly preview showed U18 with pin 1 top left instead of bottom
+left (input and output swapped) and U16 with pin 1 bottom right instead of bottom left. Every
+polarised or multi-pin part — 42 rows, not just the two reported — was then recomputed against
+the EasyEDA footprint of its LCSC number (JLCEDA/EasyEDA Official Library, https://lceda.cn/,
+https://easyeda.com; tool `fertigung/werkzeug/easyeda_abgleich.py`). Four rotations were wrong
+and are corrected in `fertigung/werkzeug/jlc_korrektur.csv`:
+
+| Part | LCSC | Side | CPL before | CPL now | Match |
+|---|---|---|---|---|---|
+| U18 | C2869734 | top | 270° | **0°** | 6/6 pads in order; EasyEDA rows 0.21 mm further out, symmetric |
+| U16 | C129313 | bottom | 90° | **0°** | 10/10 pads, max. 0.04 mm |
+| U5 | C133796 | top | 0° | **270°** | 5/5 pads, max. 0.13 mm |
+| Q4 | C383201 | top | 0° | **180°** | 3/3 pads, max. 0.03 mm |
+
+The other 38 rows agree. R35 has a new part number, C100510 (LIZ Elec CR0402FF6800G, 680 Ω 1 %),
+replacing C25130 at order time. Details: `fertigung/DREHLAGEN_PRUEFEN.md`.
 
 ### Footprint origins not at the pad centre — fixed in rev A2
 

@@ -1,24 +1,70 @@
 # Drehlagen und Positionen fuer die JLCPCB-Vorschau — Soll-Zustand
 
-Stand: **01.10.2026**, erzeugt aus `CPL_JLCPCB.csv` und der Platine (rev A2 Endstand).
+Stand: **02.10.2026**, nach der JLCPCB-Vorschau berichtigt (U18, U16, U5, Q4; Y1-Bemerkung; R35).
+Zuvor: 01.10.2026, erzeugt aus `CPL_JLCPCB.csv` und der Platine (rev A2 Endstand).
 Die Fassung vom 21.09.2026 ist ersetzt; sie nannte U1, U2, C1, C2, R37, R38, R51, R64
 und FB3, die es nicht mehr gibt, und kannte die in E2.3, E4, E5c und F7.3 neu
 eingefuegten Bauteile nicht.
 
 **Grundlage:** `ft_cpl.py` (Logik des Fabrication Toolkit) plus
-`werkzeug/jlc_korrektur.csv` (15 Zeilen). Die Korrekturen stammen aus einem Abgleich mit
+`werkzeug/jlc_korrektur.csv` (19 Zeilen). Die Korrekturen stammen aus einem Abgleich mit
 dem EasyEDA-Footprint der jeweiligen LCSC-Nummer; dieser Footprint bestimmt JLCPCBs
 Nullage und Mittelpunkt.
 
 * **Konvention**, an den laut Vorschau richtigen Teilen bestaetigt:
   * oben: CPL-Drehung = Drehung des EasyEDA-Footprints
   * unten: CPL-Drehung = 360° − Drehung des gespiegelten EasyEDA-Footprints
-  * Bestaetigt oben an U8 und U9, unten an U10, U11, Q1, Q3 und X1.
+  * Bestaetigt oben an U8 und U9, unten an U10, U11, Q1, Q3 und X1; am 02.10.2026 an allen
+    42 gepolten und mehrpoligen Teilen nachgerechnet (Abschnitt „Berichtigung").
 * **Pin 1** ist die Lage von Pad 1 relativ zur Padmitte, in der Ansicht der Vorschau:
   oben in Draufsicht, unten in Unteransicht — also seitenverkehrt zur Draufsicht.
   Die Werte unten sind aus unserem Footprint gerechnet.
 * In der Vorschau pruefen: rosa Punkt an der angegebenen Ecke; Bestueckungsdruck-Marke
   an derselben Ecke; das Gehaeuse deckt alle Pads.
+
+## Berichtigung nach der JLCPCB-Vorschau vom 02.10.2026
+
+Die Bestellung wurde angehalten: die Vorschau zeigte U18 mit Pin 1 oben links statt unten links
+(VIN/VOUT vertauscht), U16 mit Pin 1 unten rechts statt unten links und Y1 nur als Platzhalter.
+Daraufhin wurde **jedes gepolte oder mehrpolige Bauteil** (42 Zeilen, Tabelle unten) gegen den
+EasyEDA-Footprint seiner LCSC-Nummer nachgerechnet, nicht nur die drei gemeldeten: Footprint laden,
+an die CPL-Mitte legen (unten in x gespiegelt), in 45°-Schritten drehen und gleichnamige Pads
+zaehlen (`werkzeug/easyeda_abgleich.py`, Daten `pruefung/easyeda_pads_2026-10-02.json`).
+
+**Vier Drehungen waren falsch**, alle vier jetzt in `werkzeug/jlc_korrektur.csv` (19 Zeilen):
+
+| Bauteil | LCSC | Seite | CPL bisher | CPL jetzt | Abgleich mit dem EasyEDA-Footprint | Folge der alten Drehung |
+|---|---|---|---|---|---|---|
+| **U18** | C2869734 | oben | 270° | **0°** | 6/6 Pads in gleicher Reihenfolge; Pin 1 unten links (`/Power/+5V_SW`). EasyEDA setzt die Padreihen bei ±1,10 mm, unser Footprint bei ±0,89 mm — 0,21 mm je Reihe, symmetrisch nach aussen, die Anschluesse liegen auf den Pads | Gehaeuse quer, VIN/VOUT vertauscht (Meldung aus der Vorschau) |
+| **U16** | C129313 | unten | 90° | **0°** | 10/10 Pads, max. 0,04 mm; Pin 1 in der Vorschau (Unteransicht) unten links | Pin 1 unten rechts (Meldung aus der Vorschau) |
+| **U5** | C133796 | oben | 0° | **270°** | 5/5 Pads, max. 0,13 mm; EasyEDA hat Pin 1 unten rechts (Endung `-BR`), unser Footprint unten links | Eingangs- und Ausgangsseite quer; die alte Korrekturzeile „unverdreht deckungsgleich" war falsch |
+| **Q4** | C383201 | oben | 0° | **180°** | 3/3 Pads, max. 0,03 mm; Pin 1 (`USB_EN_GATE`) oben links | Gate/Source auf der Drain-Seite; Q1 und Q2 mit derselben Nummer waren richtig, weil fuer sie eine andere Regel greift |
+
+Alle uebrigen 38 Zeilen stimmen mit dem EasyEDA-Footprint. Nicht als Zaehlung, sondern im
+Einzelnen belegt sind:
+
+* **J5:** EasyEDA zerlegt jeden der beiden 7-mm-Kontaktstreifen in zwei Pads (1+4, 2+3); bei 225°
+  liegen 1 und 4 auf unserem Streifen 1, 2 und 3 auf Streifen 2 — richtig.
+* **D6:** 1→1 und 2→2 bei 270°, je 0,32 mm Versatz (anderer Padabstand), richtig.
+* **U3/U7:** 16/17 — das Waermepad ist bei uns in Teilflaechen zerlegt; alle Anschlusspads 0,04 mm.
+* **MK1/MK2:** 4/8 — Massering wie unter „Einzelhinweise".
+* **SW1/SW2:** 2/4 — Taster, 180°-symmetrisch, Pads 1/2 und 3/4 paarweise verbunden.
+
+**Y1 (C49158179):** EasyEDA liefert fuer die Nummer kein Bauteil („Component not found",
+abgefragt 02.10.2026); die Vorschau zeigt nur einen Platzhalter, und der Bestuecker legt das
+Teil von Hand auf. Die Drehung in der CPL (270°) bleibt; massgeblich ist die Bestueckungsdruck-Marke:
+der Winkel im Bestueckungsdruck sitzt an der Ecke **oben links**, und dort liegt Pad 1
+(`XTAL_N`) — aus der Platine nachgemessen (Winkel 117,03…119,57 / 67,83…70,77 mm, Pad 1 bei
+117,75 / 68,60). **Bemerkung fuer JLCPCB im Bestellformular:**
+
+> Y1 orientation per silkscreen pin-1 corner mark (top-left).
+
+**R35:** neue Nummer **C100510** (LIZ Elec CR0402FF6800G, 680 Ω 1 % 0402) statt C25130, Ersatz auf
+Angabe des Betreibers. Ungepolt; Zeile in der Tabelle des Pin-Audits.
+
+Quelle der Footprint-Daten: JLCEDA/EasyEDA Official Library (https://lceda.cn/,
+https://easyeda.com), abgerufen am 02.10.2026 ueber
+`easyeda.com/api/products/<LCSC>/components`.
 
 ## Was nach rev A1 neu zu pruefen ist
 
@@ -31,17 +77,17 @@ in rev A1 abgeglichen und ist seither unveraendert.
 |---|---|---|---|---|---|
 | **J1** | oben | 135° | 152.9000 / -65.8000 | unten (GND) | in E5.3 als FP_SMD gekennzeichnet, Position daher aus dem Ursprung |
 | **J6** | oben | 270° | 157.9750 / -93.7810 | unten rechts (GND) | neu in E5c; Nummer in E7 von C25744/C324723 auf C424659 berichtigt |
-| **Q4** | oben | 0° | 157.0000 / -83.9000 | oben links (/Power/USB_EN_GATE) | neu in E4; Nummer C383201 erst in E7 eingetragen |
+| **Q4** | oben | 180° | 157.0000 / -83.9000 | oben links (/Power/USB_EN_GATE) | neu in E4; Nummer C383201 erst in E7 eingetragen; Drehung am 02.10.2026 von 0° berichtigt |
 | **R76** | oben | 0° | 156.4000 / -81.8000 | links (+14V) | Nummer in E7 von C17168 (0 Ohm!) auf C26083 (1 M) berichtigt |
 | **R77** | oben | 0° | 157.1000 / -80.8000 | links (/Power/USB_EN_GATE) | Nummer in E7 von C17168 (0 Ohm!) auf C25778 (330 k) berichtigt |
 | **R80** | oben | 0° | 154.7000 / -90.6900 | links (/LEDs/LED6_DOUT) | Nummer in E7 von C25744 (10 k!) auf C25076 (100 R) berichtigt |
-| **U5** | oben | 0° | 141.0000 / -75.9650 | unten links (+3V3) | Typ MIC5365-1.8 -> TLV70018DCKR (C626087 -> C133796), E5.2 |
-| **U18** | oben | 270° | 124.8000 / -106.7000 | unten links (/Power/+5V_SW) | neu in E4; Nummer C2869734 erst in E7 eingetragen |
+| **U5** | oben | 270° | 141.0000 / -75.9650 | unten links (+3V3) | Typ MIC5365-1.8 -> TLV70018DCKR (C626087 -> C133796), E5.2; Drehung am 02.10.2026 von 0° berichtigt |
+| **U18** | oben | 0° | 124.8000 / -106.7000 | unten links (/Power/+5V_SW) | neu in E4; Nummer C2869734 erst in E7 eingetragen; Drehung am 02.10.2026 von 270° berichtigt |
 | **LED2** | unten | 90° | 125.2624 / -89.1135 | oben rechts (+5V) | Typ SK6805-EC20 -> SK6812-EC20 (C2890036 -> C2909058), E6 |
 | **LED3** | unten | 90° | 132.2500 / -89.1000 | oben rechts (+5V) | Typ SK6805-EC20 -> SK6812-EC20 (C2890036 -> C2909058), E6 |
 | **LED4** | unten | 90° | 139.2000 / -89.1000 | oben rechts (+5V) | Typ SK6805-EC20 -> SK6812-EC20 (C2890036 -> C2909058), E6 |
 | **LED5** | unten | 90° | 146.1000 / -89.1000 | oben rechts (+5V) | Typ SK6805-EC20 -> SK6812-EC20 (C2890036 -> C2909058), E6 |
-| **U16** | unten | 90° | 121.5000 / -70.2500 | unten links (unconnected-(U16-D1+-Pad1)) | neu in E2.3 |
+| **U16** | unten | 0° | 121.5000 / -70.2500 | unten links (unconnected-(U16-D1+-Pad1)) | neu in E2.3; Drehung am 02.10.2026 von 90° berichtigt |
 | **U19** | unten | 0° | 118.4500 / -84.4500 | unten rechts (GND) | neu in F7.3; Nummer C12495 erst in E7 eingetragen |
 | **X1** | unten | 270° | 133.0000 / -59.5000 | oben links (Net-(U10-XIN)) | Ursprung in E5.3 auf das Bezugszentrum gesetzt |
 
@@ -73,20 +119,24 @@ J4 (xSYS2-Padfeld, Audit K2) ist DNP und steht nicht in der CPL.
 
 ## Nach dem Pin-Audit vom 02.10.2026 zusaetzlich zu pruefen
 
-Die CPL ist aus dem Stand nach H1–H6 und den Entscheidungen vom 02.10.2026 neu erzeugt. **Sechs** Zeilen kommen hinzu (C110 ist DNP und steht nicht in der CPL). Y1 ist das einzige
+Die CPL ist aus dem Stand nach H1–H6 und den Entscheidungen vom 02.10.2026 neu erzeugt. **Sieben** Zeilen kommen hinzu (C110 ist DNP und steht nicht in der CPL). Y1 ist das einzige
 Teil, bei dem die Drehung zaehlt: um 90° verdreht laegen die Quarzanschluesse (Pins 1/3) auf den
 GND-Pads (2/4). Um 180° verdreht ist gleichwertig (der Quarz ist symmetrisch).
 
 | Bauteil | Seite | Drehung | Mitte X / Y | LCSC | warum neu |
 |---|---|---|---|---|---|
-| **Y1** | oben | 270° | 118.3000 / -69.3000 | C49158179 | neue Nummer (JLYE Y201640MDBCX, ±10 ppm, Pin-Audit H1); Pin 1 oben links (Net-(U8-XTAL_N)), Pin 3 zu XTAL_P — JLYE-Datenblatt „Connection“: 1/3 Quarz, 2/4 GND |
+| **Y1** | oben | 270° | 118.3000 / -69.3000 | C49158179 | neue Nummer (JLYE Y201640MDBCX, ±10 ppm, Pin-Audit H1); Pin 1 oben links (Net-(U8-XTAL_N)), Pin 3 zu XTAL_P — JLYE-Datenblatt „Connection“: 1/3 Quarz, 2/4 GND. **Kein EasyEDA-Modell**, Bemerkung an JLCPCB: „Y1 orientation per silkscreen pin-1 corner mark (top-left)“ |
 | **R72** | unten | 180° | 139.8100 / -82.1000 | C25798 | neue Nummer (75 kΩ statt 200 kΩ, H2) |
 | **C17** | oben | 180° | 138.9700 / -73.1150 | C19702 | neue Nummer (10 µF statt 4,7 µF, H4); dieselbe Nummer wie C13/C18/C107 |
 | **R81** | unten | 270° | 116.1000 / -84.9000 | C25744 | neu (H3), 0402 auf B.Cu neben U19 |
 | **C63** | unten | 0° | 122.7550 / -60.7500 | C52923 | neue Nummer (1 µF statt 100 nF, U10-B1) |
 | **C98** | unten | 180° | 139.8000 / -83.1000 | C1525 | neue Nummer (100 nF statt 1 µF, MPR121-Datenblatt) |
+| **R35** | unten | 90° | 131.6000 / -60.6000 | C100510 | neue Nummer (LIZ Elec CR0402FF6800G, 680 Ω 1 %, statt C25130), Ersatz bei der Bestellung 02.10.2026 |
 
 ## Alle gepolten und mehrpoligen Bauteile
+
+Spalte „Abgleich": Herkunft der Drehung. Zusaetzlich sind **alle** Zeilen am 02.10.2026 gegen
+den EasyEDA-Footprint nachgerechnet (Abschnitt „Berichtigung").
 
 | Bauteil | Seite | Drehung | Mitte X / Y (mm) | Pin 1 in der Vorschau (Netz) | Abgleich |
 |---|---|---|---|---|---|
@@ -103,7 +153,7 @@ GND-Pads (2/4). Um 180° verdreht ist gleichwertig (der Quarz ist symmetrisch).
 | MK1 | oben | 225° | 104.1227 / -82.3469 | rechts (Net-(MK1-DATA)) | rev A1 |
 | MK2 | oben | 45° | 167.4438 / -96.0810 | links (Net-(MK2-DATA)) | rev A1 |
 | POWER_IN1 | oben | 0° | 141.3104 / -120.2010 | oben rechts (GND) | rev A1, korrigiert |
-| Q4 | oben | 0° | 157.0000 / -83.9000 | oben links (/Power/USB_EN_GATE) | **NEU PRUEFEN** |
+| Q4 | oben | 180° | 157.0000 / -83.9000 | oben links (/Power/USB_EN_GATE) | **NEU PRUEFEN**, EasyEDA 02.10., korrigiert |
 | R76 | oben | 0° | 156.4000 / -81.8000 | links (+14V) | **NEU PRUEFEN** |
 | R77 | oben | 0° | 157.1000 / -80.8000 | links (/Power/USB_EN_GATE) | **NEU PRUEFEN** |
 | R80 | oben | 0° | 154.7000 / -90.6900 | links (/LEDs/LED6_DOUT) | **NEU PRUEFEN** |
@@ -111,14 +161,14 @@ GND-Pads (2/4). Um 180° verdreht ist gleichwertig (der Quarz ist symmetrisch).
 | SW2 | oben | 270° | 119.0200 / -85.0000 | oben rechts (ESP_BOOT) | rev A1 |
 | U3 | oben | 270° | 122.0500 / -114.5625 | oben links (Net-(L1-Pad1)) | rev A1, korrigiert |
 | U4 | oben | 0° | 153.4000 / -84.7000 | unten links (+5V) | rev A1, korrigiert |
-| U5 | oben | 0° | 141.0000 / -75.9650 | unten links (+3V3) | **NEU PRUEFEN**, korrigiert |
+| U5 | oben | 270° | 141.0000 / -75.9650 | unten links (+3V3) | **NEU PRUEFEN**, EasyEDA 02.10., korrigiert |
 | U6 | oben | 180° | 135.7000 / -78.8600 | oben rechts (GND) | rev A1, korrigiert |
 | U7 | oben | 270° | 112.9800 / -103.2300 | oben links (Net-(L2-Pad1)) | rev A1, korrigiert |
 | U8 | oben | 90° | 124.4000 / -70.0000 | unten links (Net-(U8-LNA_IN)) | rev A1 |
 | U9 | oben | 90° | 127.2000 / -60.3000 | unten rechts (/ESP32-S3R8/SPI_CS0) | rev A1 |
 | U14 | oben | 270° | 136.2000 / -103.3000 | oben links (GNDA) | rev A1, korrigiert |
-| U18 | oben | 270° | 124.8000 / -106.7000 | unten links (/Power/+5V_SW) | **NEU PRUEFEN** |
-| Y1 | oben | 270° | 118.3000 / -69.3000 | oben links (Net-(U8-XTAL_N)) | **NEU PRUEFEN** (neue Nummer C49158179, H1) |
+| U18 | oben | 0° | 124.8000 / -106.7000 | unten links (/Power/+5V_SW) | **NEU PRUEFEN**, EasyEDA 02.10., korrigiert |
+| Y1 | oben | 270° | 118.3000 / -69.3000 | oben links (Net-(U8-XTAL_N)) | **NEU PRUEFEN** (neue Nummer C49158179, H1; kein EasyEDA-Modell, nach Bestueckungsdruck) |
 | D1 | unten | 225° | 152.2606 / -64.3323 | oben rechts (GND) | rev A1 |
 | D6 | unten | 270° | 138.4000 / -76.2000 | oben (Net-(U12-2Y)) | rev A1 |
 | LED2 | unten | 90° | 125.2624 / -89.1135 | oben rechts (+5V) | **NEU PRUEFEN** |
@@ -133,7 +183,7 @@ GND-Pads (2/4). Um 180° verdreht ist gleichwertig (der Quarz ist symmetrisch).
 | U12 | unten | 180° | 135.0000 / -76.5000 | oben rechts (GND) | rev A1, korrigiert |
 | U13 | unten | 180° | 132.9625 / -94.5000 | oben links (+5V) | rev A1, korrigiert |
 | U15 | unten | 90° | 142.9000 / -83.6000 | unten rechts (/ESP32-S3R8/TOUCH_IRQ) | rev A1, korrigiert |
-| U16 | unten | 90° | 121.5000 / -70.2500 | unten links (unconnected-(U16-D1+-Pad1)) | **NEU PRUEFEN** |
+| U16 | unten | 0° | 121.5000 / -70.2500 | unten links (unconnected-(U16-D1+-Pad1)) | **NEU PRUEFEN**, EasyEDA 02.10., korrigiert |
 | U19 | unten | 0° | 118.4500 / -84.4500 | unten rechts (GND) | **NEU PRUEFEN** |
 | X1 | unten | 270° | 133.0000 / -59.5000 | oben links (Net-(U10-XIN)) | **NEU PRUEFEN** |
 
@@ -160,9 +210,11 @@ EasyEDA-Footprint teils 180° Unterschied, was nicht geaendert wurde.
 
 ## Einzelhinweise
 
-* **Y1:** Fuer C424431 liefert EasyEDA keinen Footprint ("Component not found");
-  **nicht abgeglichen**. Bei einem 4-Pin-Quarz vertauscht eine 90°-Drehung Quarz- und
-  Masseanschluesse. Pin 1 (XTAL_N) muss oben links liegen.
+* **Y1:** Auch fuer die neue Nummer C49158179 liefert EasyEDA keinen Footprint ("Component not
+  found", 02.10.2026; vorher ebenso fuer C424431); **nicht abgleichbar**. Bei einem 4-Pin-Quarz
+  vertauscht eine 90°-Drehung Quarz- und Masseanschluesse. Pin 1 (XTAL_N) muss oben links liegen,
+  an der Ecke mit dem Winkel im Bestueckungsdruck. Bemerkung an JLCPCB: „Y1 orientation per
+  silkscreen pin-1 corner mark (top-left)".
 * **MK1/MK2:** EasyEDA teilt den Massering in vier Flaechen, unser Footprint hat einen
   Ring mit zwei Pads. Die Signalpads und die Schallöffnung decken sich; in rev A1 war
   das in der Vorschau richtig.
@@ -171,4 +223,5 @@ EasyEDA-Footprint teils 180° Unterschied, was nicht geaendert wurde.
 * **J1** (USB-C): die vier Schirmlaschen sitzen in durchkontaktierten Langloechern.
   Pruefen, dass das Gehaeuse auf allen 24 Signalpads und den vier Laschen liegt.
 
-Erzeugt mit `scratchpad/e6/h1_drehlagen.py` aus CPL und Platine.
+Erzeugt mit `scratchpad/e6/h1_drehlagen.py` aus CPL und Platine; Berichtigung vom 02.10.2026
+von Hand nach `werkzeug/easyeda_abgleich.py`, jede geaenderte Zahl dort nachgerechnet.

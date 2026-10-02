@@ -77001,7 +77001,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Description" "SMD RES 680R-5%-1/16W;0402"
+		(property "Description" "SMD RES 680R-1%-1/16W;0402"
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
@@ -77014,7 +77014,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+		(property "Manufacturer" "LIZ Elec"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -77028,7 +77028,7 @@
 				(justify mirror)
 			)
 		)
-		(property "MPN" "0402WGF6800TCE"
+		(property "MPN" "CR0402FF6800G"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -77042,7 +77042,7 @@
 				(justify mirror)
 			)
 		)
-		(property "SKU" "301010505"
+		(property "SKU" ""
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -77098,7 +77098,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Power Rating" "5%"
+		(property "Power Rating" "62.5mW"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -77112,7 +77112,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Status" "Combox Pro"
+		(property "Status" ""
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -77126,7 +77126,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Temperature" "-55°C to 155°C"
+		(property "Temperature" "-55°C to 125°C"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -77196,7 +77196,7 @@
 				(justify mirror)
 			)
 		)
-		(property "LCSC Part #" "C25130"
+		(property "LCSC Part #" "C100510"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -77210,7 +77210,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Manufacturer Part" "0402WGF6800TCE"
+		(property "Manufacturer Part" "CR0402FF6800G"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")

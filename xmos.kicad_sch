@@ -31839,7 +31839,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "SMD RES 680R-5%-1/16W;0402"
+		(property "Description" "SMD RES 680R-1%-1/16W;0402"
 			(at 102.87 154.94 0)
 			(effects
 				(font
@@ -31848,7 +31848,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+		(property "Manufacturer" "LIZ Elec"
 			(at 102.87 154.94 0)
 			(effects
 				(font
@@ -31857,7 +31857,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "0402WGF6800TCE"
+		(property "MPN" "CR0402FF6800G"
 			(at 102.87 154.94 0)
 			(effects
 				(font
@@ -31866,7 +31866,7 @@
 				(hide yes)
 			)
 		)
-		(property "SKU" "301010505"
+		(property "SKU" ""
 			(at 102.87 154.94 0)
 			(effects
 				(font
@@ -31902,7 +31902,7 @@
 				(hide yes)
 			)
 		)
-		(property "Power Rating" "5%"
+		(property "Power Rating" "62.5mW"
 			(at 104.775 157.48 90)
 			(effects
 				(font
@@ -31911,7 +31911,7 @@
 				(justify left)
 			)
 		)
-		(property "Status" "Combox Pro"
+		(property "Status" ""
 			(at 102.87 154.94 0)
 			(effects
 				(font
@@ -31920,7 +31920,7 @@
 				(hide yes)
 			)
 		)
-		(property "Temperature" "-55°C to 155°C"
+		(property "Temperature" "-55°C to 125°C"
 			(at 102.87 154.94 0)
 			(effects
 				(font
@@ -31962,7 +31962,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C25130"
+		(property "LCSC Part #" "C100510"
 			(at 102.87 154.94 90)
 			(effects
 				(font
@@ -31971,7 +31971,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer Part" "0402WGF6800TCE"
+		(property "Manufacturer Part" "CR0402FF6800G"
 			(at 102.87 154.94 90)
 			(effects
 				(font

@@ -179,3 +179,12 @@ SPDX-FileCopyrightText = [
     "2026 marceldale (modifications in tas58xx.h and tas58xx_minimal.h)",
 ]
 SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# --- EasyEDA footprint pad data (working repository only, not exported) ----------------------
+# Pad positions extracted on 2 Oct 2026 from the JLCEDA/EasyEDA Official Library
+# (https://lceda.cn/, https://easyeda.com) to check the CPL rotations. Not ours; terms not established.
+[[annotations]]
+path = ["pruefung/easyeda_pads_*.json"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["NOASSERTION - JLCEDA/EasyEDA Official Library, see the note above"]
+SPDX-License-Identifier = "LicenseRef-Vendor-Model-Terms-Not-Established"

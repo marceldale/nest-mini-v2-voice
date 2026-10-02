@@ -56,7 +56,7 @@
 55,6,"R20,R21,R49,R58,R79,R81",UNI-ROYAL(Uniroyal Elec),0402WGF1002TCE,-55℃~+155℃ 10kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount,0402,R_0402_1005Metric,10k,C25744
 56,4,"R32,R33,R50,R70",UNI-ROYAL(Uniroyal Elec),0402WGF4701TCE,-55℃~+155℃ 4.7kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount,0402,R_0402_1005Metric,4.7k,C25900
 57,3,"R34,R73,R76",UNI-ROYAL(Uniroyal Elec),0402WGF1004TCE,-55℃~+155℃ 1MΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount,0402,R_0402_1005Metric,1M,C26083
-58,1,R35,UNI-ROYAL(Uniroyal Elec),0402WGF6800TCE,-55℃~+155℃ 50V 62.5mW 680Ω Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount,0402,R_0402_1005Metric,680R,C25130
+58,1,R35,LIZ Elec,CR0402FF6800G,-55℃~+125℃ 50V 62.5mW 680Ω Thick Film Resistor ±1% ±200ppm/℃ 0402 Chip Resistor - Surface Mount,0402,R_0402_1005Metric,680R,C100510
 59,4,"R36,R52,R65,R71",UNI-ROYAL(Uniroyal Elec),0402WGF4702TCE,-55℃~+155℃ 47kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount,0402,R_0402_1005Metric,47k,C25792
 60,9,"R39,R47,R55,R56,R59,R60,R62,R63,R80",UNI-ROYAL(Uniroyal Elec),0402WGF1000TCE,-55℃~+155℃ 100Ω 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount,0402,R_0402_1005Metric,100R,C25076
 61,2,"R48,R54",UNI-ROYAL(Uniroyal Elec),0402WGF4703TCE,-55℃~+155℃ 470kΩ 50V 62.5mW Thick Film Resistor ±1% ±100ppm/℃ 0402 Chip Resistor - Surface Mount,0402,R_0402_1005Metric,470k,C25790
