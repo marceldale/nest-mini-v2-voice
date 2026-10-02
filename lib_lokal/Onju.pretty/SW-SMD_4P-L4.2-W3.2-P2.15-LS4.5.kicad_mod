@@ -1,0 +1,491 @@
+(footprint "SW-SMD_4P-L4.2-W3.2-P2.15-LS4.5"
+		(layer "F.Cu")
+		(at 0 0)
+		(property "Reference" "SW1"
+			(at 0 -2.5739 90)
+			(layer "F.SilkS")
+			(hide yes)
+			(effects
+				(font
+					(size 0.8 1.27)
+					(thickness 0.08)
+				)
+			)
+		)
+		(property "Value" "Reset"
+			(at 3.2 0.1 0)
+			(layer "F.SilkS")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.12)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Push button switch, generic, two pins"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Function" "ESP32"
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer" "C&K"
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer Part" "PTS810SJS250SMTRLFS"
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Supplier Part" "C221897"
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC Part #" "C221897"
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Isat" ""
+			(at 0 0 270)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(sheetname "/ESP32-S3R8/")
+		(sheetfile "esp32.kicad_sch")
+		(fp_line
+			(start -2.0999 1.6)
+			(end 2.1 1.6)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -1.27 1.143)
+			(end -0.8205 1.5924)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start 1.27 1.143)
+			(end 0.8519 1.561)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -0.7632 0.761)
+			(end 0.7608 0.761)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start 2.1 0.4938)
+			(end 2.1 -0.4939)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -2.0999 -0.4939)
+			(end -2.0999 0.4938)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -2.0999 -0.4939)
+			(end -2.0999 -0.494)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -2.0999 -0.494)
+			(end -2.0993 -0.4946)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -0.7632 -0.763)
+			(end 0.762 -0.762)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -1.27 -1.016)
+			(end -0.7444 -1.5416)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start 1.27 -1.143)
+			(end 0.8011 -1.6119)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -2.0999 -1.6)
+			(end 2.1 -1.6)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_arc
+			(start -0.7632 0.761)
+			(mid -1.5252 -0.001)
+			(end -0.7632 -0.763)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_arc
+			(start 0.762 -0.762)
+			(mid 1.5229 0.0001)
+			(end 0.7608 0.761)
+			(stroke
+				(width 0.254)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_circle
+			(center -2.2499 -1.6001)
+			(end -2.2199 -1.6001)
+			(stroke
+				(width 0.06)
+				(type default)
+			)
+			(fill no)
+			(layer "User.5")
+		)
+		(pad "1" smd rect
+			(at -2 -1.0751)
+			(size 0.7 1)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(pinfunction "1")
+			(pintype "passive")
+			(solder_mask_margin 0.0508)
+			(solder_paste_margin 0)
+			(thermal_bridge_angle 0)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "2" smd rect
+			(at -2 1.0751)
+			(size 0.7 1)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(pinfunction "2")
+			(pintype "passive")
+			(solder_mask_margin 0.0508)
+			(solder_paste_margin 0)
+			(thermal_bridge_angle 0)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "3" smd rect
+			(at 2 -1.0751)
+			(size 0.7 1)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(solder_mask_margin 0.0508)
+			(solder_paste_margin 0)
+			(thermal_bridge_angle 0)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "4" smd rect
+			(at 2 1.0751)
+			(size 0.7 1)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(solder_mask_margin 0.0508)
+			(solder_paste_margin 0)
+			(thermal_bridge_angle 0)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.3")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 113.7 82.9) (xy 116.9 82.9) (xy 116.9 87.1) (xy 113.7 87.1)
+				)
+			)
+			(filled_polygon
+				(layer "User.3")
+				(island)
+				(pts
+					(xy 113.7 82.9) (xy 116.9 82.9) (xy 116.9 87.1) (xy 113.7 87.1)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.4")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 114.5001 82.7501) (xy 114.5001 83.2501) (xy 113.9501 83.2501) (xy 113.9501 82.7501)
+				)
+			)
+			(filled_polygon
+				(layer "User.4")
+				(island)
+				(pts
+					(xy 114.5001 82.7501) (xy 114.5001 83.2501) (xy 113.9501 83.2501) (xy 113.9501 82.7501)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.4")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 114.5001 86.7499) (xy 114.5001 87.25) (xy 113.9501 87.25) (xy 113.9501 86.7499)
+				)
+			)
+			(filled_polygon
+				(layer "User.4")
+				(island)
+				(pts
+					(xy 114.5001 86.7499) (xy 114.5001 87.25) (xy 113.9501 87.25) (xy 113.9501 86.7499)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.4")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 116.65 82.75) (xy 116.65 83.2501) (xy 116.0999 83.2501) (xy 116.0999 82.75)
+				)
+			)
+			(filled_polygon
+				(layer "User.4")
+				(island)
+				(pts
+					(xy 116.65 82.75) (xy 116.65 83.2501) (xy 116.0999 83.2501) (xy 116.0999 82.75)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.4")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 116.65 86.7499) (xy 116.65 87.2499) (xy 116.0999 87.2499) (xy 116.0999 86.7499)
+				)
+			)
+			(filled_polygon
+				(layer "User.4")
+				(island)
+				(pts
+					(xy 116.65 86.7499) (xy 116.65 87.2499) (xy 116.0999 87.2499) (xy 116.0999 86.7499)
+				)
+			)
+		)
+		(embedded_fonts no)
+		(model "D:/Github/MiciMike78/parts_global/PTS810SJS250SMTRLFS.STEP"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 -0 -0)
+			)
+		)
+	)

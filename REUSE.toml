@@ -1,0 +1,181 @@
+# SPDX-FileCopyrightText: 2026 marceldale
+# SPDX-License-Identifier: MIT
+#
+# Licence assignment for the files that cannot carry a comment header of their own
+# (KiCad documents, Gerbers, CSV, STEP/STL/SVG, images, binaries).
+# Files that *can* carry a header do carry one; see LICENSES/ for the full texts.
+
+version = 1
+SPDX-PackageName = "nest-mini-v2-voice"
+SPDX-PackageSupplier = "marceldale <https://github.com/marceldale>"
+SPDX-PackageDownloadLocation = "https://github.com/marceldale/nest-mini-v2-voice"
+
+# --- The board itself -------------------------------------------------------------------
+# Derived from iMike78's nest-mini-drop-in-pcb, which is CERN-OHL-S v2. The outline, the
+# mounting geometry and much of the layout are the original designer's work; the changes
+# are ours. Both are named, as the licence requires.
+[[annotations]]
+path = [
+    "nest-mini-v2-drop-in-pcb.kicad_pcb",
+    "nest-mini-v2-drop-in-pcb.kicad_sch",
+    "nest-mini-v2-drop-in-pcb.kicad_pro",
+    "nest-mini-v2-drop-in-pcb.kicad_prl",
+    "nest-mini-v2-drop-in-pcb.kicad_dru",
+    "nest-mini-v2-drop-in-pcb.pdf",
+    "audio.kicad_sch",
+    "esp32.kicad_sch",
+    "leds.kicad_sch",
+    "power_handling.kicad_sch",
+    "power_handling.kicad_sch-bak",
+    "xmos.kicad_sch",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2024-2025 iMike78", "2026 marceldale"]
+SPDX-License-Identifier = "CERN-OHL-S-2.0"
+
+# --- Library tables ----------------------------------------------------------------------
+# These two point every library at lib_lokal/. Without them, and without that directory,
+# a clone of this repository cannot be opened.
+[[annotations]]
+path = ["sym-lib-table", "fp-lib-table"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2026 marceldale"]
+SPDX-License-Identifier = "CERN-OHL-S-2.0"
+
+# --- lib_lokal: excerpts from the KiCad standard libraries -------------------------------
+# Trimmed copies holding only the symbols and footprints this design uses (Device.kicad_sym
+# is 17 kB here against 2374 kB in the KiCad 9.0.9 installation). KiCad's library licence
+# grants an exception for *designs* that use the libraries, but states plainly that the
+# exception does **not** apply when the libraries, or parts of them, are redistributed as a
+# collection — which is what this directory does. So these files keep CC-BY-SA-4.0, with
+# attribution, and the licence text is in LICENSES/.
+[[annotations]]
+path = [
+    "lib_lokal/Device.kicad_sym",
+    "lib_lokal/power.kicad_sym",
+    "lib_lokal/Connector.kicad_sym",
+    "lib_lokal/Connector_Generic.kicad_sym",
+    "lib_lokal/Connector_Generic_MountingPin.kicad_sym",
+    "lib_lokal/Diode.kicad_sym",
+    "lib_lokal/Switch.kicad_sym",
+    "lib_lokal/Transistor_BJT.kicad_sym",
+    "lib_lokal/Regulator_Switching.kicad_sym",
+    "lib_lokal/Memory_Flash.kicad_sym",
+    "lib_lokal/Power_Management.kicad_sym",
+    "lib_lokal/74xGxx.kicad_sym",
+    "lib_lokal/Capacitor_SMD.pretty/**",
+    "lib_lokal/Resistor_SMD.pretty/**",
+    "lib_lokal/Inductor_SMD.pretty/**",
+    "lib_lokal/Diode_SMD.pretty/**",
+    "lib_lokal/Package_SO.pretty/**",
+    "lib_lokal/Package_SON.pretty/**",
+    "lib_lokal/Package_DFN_QFN.pretty/**",
+    "lib_lokal/Package_TO_SOT_SMD.pretty/**",
+    "lib_lokal/RF_Antenna.pretty/**",
+    "lib_lokal/TestPoint.pretty/**",
+    "lib_lokal/Crystal.pretty/**",
+    "lib_lokal/Connector_PinHeader_2.54mm.pretty/**",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["KiCad Libraries Contributors <https://gitlab.com/kicad/libraries>"]
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+
+# --- lib_lokal: libraries of mixed and partly unestablished origin ------------------------
+# Onju.pretty comes with the upstream design and is a mixed bag: 10 of its 23 footprints
+# carry a SnapEDA or EasyEDA note, the rest carry none. New_Library.kicad_sym and
+# FH34SRJ-10S-0.5SH_50_.kicad_sym are SnapEDA symbols. The Seeed, libdb and reSpeaker
+# symbols come from Seeed's reSpeaker project. **For none of these do we hold a licence
+# document.** They reach us through the upstream repository, which publishes them under
+# CERN-OHL-S v2, and we pass them on unchanged in the same way — but we cannot warrant the
+# terms of the parts that came from a library portal. See
+# LICENSES/LicenseRef-Vendor-Model-Terms-Not-Established.txt.
+[[annotations]]
+path = [
+    "lib_lokal/Onju.pretty/**",
+    "lib_lokal/New_Library.kicad_sym",
+    "lib_lokal/FH34SRJ-10S-0.5SH_50_.kicad_sym",
+    "lib_lokal/Seeed_libadl.kicad_sym",
+    "lib_lokal/Seeed_libdb.kicad_sym",
+    "lib_lokal/libdb.kicad_sym",
+    "lib_lokal/reSpeaker.kicad_sym",
+    "lib_lokal/0_Seeed_Misc.kicad_sym",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = [
+    "2024-2025 iMike78",
+    "NOASSERTION - parts of this came from SnapEDA, EasyEDA and Seeed; see the note above",
+]
+SPDX-License-Identifier = "LicenseRef-Vendor-Model-Terms-Not-Established"
+
+# --- Manufacturing data (generated from the board) ---------------------------------------
+[[annotations]]
+path = ["production/**", "fertigung/**", "fertigung_rev_a1/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2024-2025 iMike78", "2026 marceldale"]
+SPDX-License-Identifier = "CERN-OHL-S-2.0"
+
+# --- Enclosure: our own work --------------------------------------------------------------
+[[annotations]]
+path = ["gehaeuse/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2026 marceldale"]
+SPDX-License-Identifier = "CERN-OHL-S-2.0"
+
+# --- Documentation -----------------------------------------------------------------------
+[[annotations]]
+path = ["README.md", "CHANGES.md", "HANDGRIFFE.md", "ENDPRUEFUNG.md",
+        "VEROEFFENTLICHUNG.md", "LICENCE", "REUSE.toml", ".gitignore"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2026 marceldale"]
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["werkzeug/**", "fertigung/werkzeug/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2026 marceldale"]
+SPDX-License-Identifier = "MIT"
+
+# --- Upstream, kept unchanged -------------------------------------------------------------
+# These are iMike78's own files. We did not modify them and claim nothing in them.
+[[annotations]]
+path = ["upstream/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2024-2025 iMike78"]
+SPDX-License-Identifier = "CERN-OHL-S-2.0"
+
+# --- XMOS firmware image -------------------------------------------------------------------
+# Built from esphome/voice-kit-xmos-firmware v1.3.1 with the XTC tools. Not our code.
+[[annotations]]
+path = ["firmware/xmos/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2024-2025 XMOS LIMITED", "2024-2025 Nabu Casa, Inc."]
+SPDX-License-Identifier = "LicenseRef-XMOS-Public-Licence-1.0"
+
+# --- Third-party 3D models and footprints ---------------------------------------------------
+# These came from the component manufacturers and from library portals. Their terms are
+# **not established**: most vendor 3D models are published for use in designs without a
+# stated licence, and we have no document for any of them. They are kept here because the
+# board references them 30 times and the design cannot be rendered without them.
+#
+# If you redistribute this repository, this is the directory to check. Nothing in `parts/`
+# is covered by our licence, and we grant no rights in it.
+[[annotations]]
+path = ["parts/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["NOASSERTION - see the note above; each file comes from its component manufacturer"]
+SPDX-License-Identifier = "LicenseRef-Vendor-Model-Terms-Not-Established"
+
+# --- ESPHome component tas58xx: not ours, GPL-3.0-or-later, patched -------------------------
+# Copy of https://github.com/mrtoy-me/esphome-tas58xx at 89f29cfd687200e908a6459404abfbb513adb17d.
+# The upstream README states it is based on work by Andriy Malyshenko (sonocotta) licensed under
+# GPL-3.0; the upstream repository has no licence file of its own. Two files are modified (they
+# carry a dated notice at the top); see firmware/esphome/PATCH.md.
+[[annotations]]
+path = ["firmware/esphome/components/tas58xx/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = [
+    "mrtoy-me <https://github.com/mrtoy-me/esphome-tas58xx>",
+    "Andriy Malyshenko (sonocotta) <https://github.com/sonocotta>",
+    "2026 marceldale (modifications in tas58xx.h and tas58xx_minimal.h)",
+]
+SPDX-License-Identifier = "GPL-3.0-or-later"

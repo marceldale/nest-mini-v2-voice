@@ -1,0 +1,591 @@
+(footprint "LED-SMD_4P_SK6812D-EC3210R"
+		(layer "F.Cu")
+		(at 0 0)
+		(property "Reference" "LED6"
+			(at -0.00005 -1.235 90)
+			(layer "F.SilkS")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.08)
+				)
+			)
+		)
+		(property "Value" "SK6812D-EC3210R"
+			(at -0.00005 1.9974 90)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.12)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer Part" "SK6812D-EC3210R"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer" "OPSCO Optoelectronics"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Supplier Part" "C2890041"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Supplier" "LCSC"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Function" "LED"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MANUFACTURER" "OPSCO Optoelectronics"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MP" "SK6812D-EC3210R"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC Part #" "C2890041"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Isat" ""
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(sheetname "/LEDs/")
+		(sheetfile "leds.kicad_sch")
+		(fp_line
+			(start 0.9884 -0.0001)
+			(end 0.8417 -0.0001)
+			(stroke
+				(width 0.125)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start 0.0084 -0.0001)
+			(end -0.0083 -0.0001)
+			(stroke
+				(width 0.125)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -0.8416 -0.0001)
+			(end -0.9883 -0.0001)
+			(stroke
+				(width 0.125)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -0.9999 0.6814)
+			(end 1 0.6814)
+			(stroke
+				(width 0.125)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -0.9999 0.6814)
+			(end -0.9999 1.0999)
+			(stroke
+				(width 0.125)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start 1 1.0999)
+			(end 1 0.6813)
+			(stroke
+				(width 0.125)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -0.9999 1.0999)
+			(end 1 1.0999)
+			(stroke
+				(width 0.125)
+				(type default)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_circle
+			(center -1.5999 0)
+			(end -1.5699 0)
+			(stroke
+				(width 0.06)
+				(type default)
+			)
+			(fill no)
+			(layer "User.5")
+		)
+		(pad "1" smd rect
+			(at -0.4249 -0.125 90)
+			(size 0.5 0.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(pinfunction "GND")
+			(pintype "unspecified")
+			(solder_mask_margin 0.05)
+			(solder_paste_margin 0)
+			(thermal_bridge_angle 0)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "2" smd rect
+			(at -1.505 0.125 90)
+			(size 0.7 1)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(pinfunction "DOUT")
+			(pintype "unspecified+no_connect")
+			(solder_mask_margin 0.05)
+			(solder_paste_margin 0)
+			(thermal_bridge_angle 0)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "3" smd rect
+			(at 1.5049 0.125 90)
+			(size 0.7 1)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(pinfunction "DIN")
+			(pintype "unspecified")
+			(solder_mask_margin 0.05)
+			(solder_paste_margin 0)
+			(thermal_bridge_angle 0)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "4" smd rect
+			(at 0.4249 -0.125 90)
+			(size 0.5 0.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(pinfunction "VDD")
+			(pintype "unspecified")
+			(solder_mask_margin 0.05)
+			(solder_paste_margin 0)
+			(thermal_bridge_angle 0)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "Dwgs.User")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 171.009987 89.766792) (xy 170.909987 89.766792) (xy 170.909987 89.166792) (xy 171.009987 89.166792)
+				)
+			)
+			(filled_polygon
+				(layer "Dwgs.User")
+				(island)
+				(pts
+					(xy 171.009987 89.766792) (xy 170.909987 89.766792) (xy 170.909987 89.166792) (xy 171.009987 89.166792)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "Dwgs.User")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 171.043987 88.918592) (xy 170.943987 88.918592) (xy 170.943987 88.318592) (xy 171.043987 88.318592)
+				)
+			)
+			(filled_polygon
+				(layer "Dwgs.User")
+				(island)
+				(pts
+					(xy 171.043987 88.918592) (xy 170.943987 88.918592) (xy 170.943987 88.318592) (xy 171.043987 88.318592)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "Dwgs.User")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 171.309987 88.566792) (xy 171.309987 88.666792) (xy 170.709987 88.666792) (xy 170.709987 88.566792)
+				)
+			)
+			(filled_polygon
+				(layer "Dwgs.User")
+				(island)
+				(pts
+					(xy 171.309987 88.566792) (xy 171.309987 88.666792) (xy 170.709987 88.666792) (xy 170.709987 88.566792)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "Dwgs.User")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 171.709887 90.066692) (xy 172.209887 90.066692) (xy 172.209887 88.066792) (xy 171.709887 88.066792)
+				)
+			)
+			(filled_polygon
+				(layer "Dwgs.User")
+				(island)
+				(pts
+					(xy 171.709887 90.066692) (xy 172.209887 90.066692) (xy 172.209887 88.066792) (xy 171.709887 88.066792)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.3")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 172.189887 90.066692) (xy 171.589987 90.066692) (xy 171.589987 90.666792) (xy 171.109887 90.666692)
+					(xy 171.109887 87.466792) (xy 171.589987 87.470592) (xy 171.589987 88.066792) (xy 172.189987 88.066792)
+				)
+			)
+			(filled_polygon
+				(layer "User.3")
+				(island)
+				(pts
+					(xy 172.189887 90.066692) (xy 171.589987 90.066692) (xy 171.589987 90.666792) (xy 171.109887 90.666692)
+					(xy 171.109887 87.466792) (xy 171.589987 87.470592) (xy 171.589987 88.066792) (xy 172.189987 88.066792)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.4")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 171.109887 87.916692) (xy 171.109887 87.466792) (xy 171.589887 87.466792) (xy 171.589887 87.916692)
+				)
+			)
+			(filled_polygon
+				(layer "User.4")
+				(island)
+				(pts
+					(xy 171.109887 87.916692) (xy 171.109887 87.466792) (xy 171.589887 87.466792) (xy 171.589887 87.916692)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.4")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 171.109887 88.891792) (xy 171.109887 88.391692) (xy 171.209887 88.391692) (xy 171.209887 88.891792)
+				)
+			)
+			(filled_polygon
+				(layer "User.4")
+				(island)
+				(pts
+					(xy 171.109887 88.891792) (xy 171.109887 88.391692) (xy 171.209887 88.391692) (xy 171.209887 88.891792)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.4")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 171.109887 89.741792) (xy 171.109887 89.241692) (xy 171.209887 89.241692) (xy 171.209887 89.741792)
+				)
+			)
+			(filled_polygon
+				(layer "User.4")
+				(island)
+				(pts
+					(xy 171.109887 89.741792) (xy 171.109887 89.241692) (xy 171.209887 89.241692) (xy 171.209887 89.741792)
+				)
+			)
+		)
+		(zone
+			(net 0)
+			(net_name "")
+			(layer "User.4")
+			(hatch edge 0.5)
+			(priority 100)
+			(connect_pads yes
+				(clearance 0)
+			)
+			(min_thickness 0)
+			(filled_areas_thickness no)
+			(fill yes
+				(thermal_gap 0.5)
+				(thermal_bridge_width 0.5)
+			)
+			(polygon
+				(pts
+					(xy 171.109887 90.666792) (xy 171.109887 90.216792) (xy 171.589887 90.216792) (xy 171.589887 90.666792)
+				)
+			)
+			(filled_polygon
+				(layer "User.4")
+				(island)
+				(pts
+					(xy 171.109887 90.666792) (xy 171.109887 90.216792) (xy 171.589887 90.216792) (xy 171.589887 90.666792)
+				)
+			)
+		)
+		(embedded_fonts no)
+		(model "D:/temp/Onju voice/Parts/SK6812 AdaFruit EC3210R.step"
+			(offset
+				(xyz 2 0 1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 -0 -0)
+			)
+		)
+		(model "D:/Github/MiciMike78/parts_global/SK6812 AdaFruit EC3210R.iges"
+			(offset
+				(xyz 2 0 1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 90 180 -180)
+			)
+		)
+	)

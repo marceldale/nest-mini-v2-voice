@@ -1,0 +1,829 @@
+(footprint "HRS_FH34SRJ-12S-0.5SH_50_"
+		(layer "F.Cu")
+		(at 0 0)
+		(property "Reference" "POWER_IN1"
+			(at -7.010362 2.199001 0)
+			(layer "F.SilkS")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.08)
+				)
+			)
+		)
+		(property "Value" "FH34SRJ-10S-0.5SH_50_"
+			(at 6.25 -3.4 0)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.12)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "-55℃~+105℃ 10P Dual-sided contacts / top and bottom connection Horizontal attachment 0.5mm SMD,P=0.5mm,Surface Mount，Right Angle FFC, FPC (Flat Flexible) Connector Assemblies ROHS"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MAXIMUM_PACKAGE_HEIGHT" "1.75 mm"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Package" "SMD,P=0.5mm,Surface Mount，Right Angle"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "SnapEDA_Link" "https://www.snapeda.com/parts/FH34SRJ-12S-0.5SH(50)/Hirose/view-part/?ref=snap"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MP" "FH34SRJ-12S-0.5SH(50)"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description_1" "10 Position FFC, FPC Connector Contacts, Top and Bottom 0.020 (0.50mm) Surface Mount, Right Angle"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MANUFACTURER" "Hirose"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Supplier Part" "C324723"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer" "Hirose"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer Part" "FH34SRJ-12S-0.5SH(50)"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC Part #" "C324723"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Isat" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(sheetname "/Power/")
+		(sheetfile "power_handling.kicad_sch")
+		(attr smd)
+		(fp_poly
+			(pts
+				(xy -2.95 -1.6) (xy -2.55 -1.6) (xy -2.55 -0.7) (xy -2.95 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy -2.45 -1.6) (xy -2.05 -1.6) (xy -2.05 -0.7) (xy -2.45 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy -1.95 -1.6) (xy -1.55 -1.6) (xy -1.55 -0.7) (xy -1.95 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy -0.95 -1.6) (xy -0.55 -1.6) (xy -0.55 -0.7) (xy -0.95 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy -0.45 -1.6) (xy -0.05 -1.6) (xy -0.05 -0.7) (xy -0.45 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy 0.05 -1.6) (xy 0.45 -1.6) (xy 0.45 -0.7) (xy 0.05 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy 0.55 -1.6) (xy 0.95 -1.6) (xy 0.95 -0.7) (xy 0.55 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy 1.55 -1.6) (xy 1.95 -1.6) (xy 1.95 -0.7) (xy 1.55 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy 2.05 -1.6) (xy 2.45 -1.6) (xy 2.45 -0.7) (xy 2.05 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_poly
+			(pts
+				(xy 2.55 -1.6) (xy 2.95 -1.6) (xy 2.95 -0.7) (xy 2.55 -0.7)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Mask")
+		)
+		(fp_line
+			(start -4 -1.9)
+			(end -4 0.63)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start -3.23 1.9)
+			(end 3.23 1.9)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start 4 -1.9)
+			(end -4 -1.9)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_line
+			(start 4 0.63)
+			(end 4 -1.9)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.SilkS")
+		)
+		(fp_circle
+			(center 2.25 -2.45)
+			(end 2.85 -2.45)
+			(stroke
+				(width 0.2)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+		)
+		(fp_poly
+			(pts
+				(xy -2.875 -1.55) (xy -2.625 -1.55) (xy -2.625 -0.9) (xy -2.875 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy -2.375 -1.55) (xy -2.125 -1.55) (xy -2.125 -0.9) (xy -2.375 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy -1.875 -1.55) (xy -1.625 -1.55) (xy -1.625 -0.9) (xy -1.875 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy -0.875 -1.55) (xy -0.625 -1.55) (xy -0.625 -0.9) (xy -0.875 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy -0.375 -1.55) (xy -0.125 -1.55) (xy -0.125 -0.9) (xy -0.375 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy 0.125 -1.55) (xy 0.375 -1.55) (xy 0.375 -0.9) (xy 0.125 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy 0.625 -1.55) (xy 0.875 -1.55) (xy 0.875 -0.9) (xy 0.625 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy 1.625 -1.55) (xy 1.875 -1.55) (xy 1.875 -0.9) (xy 1.625 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy 2.125 -1.55) (xy 2.375 -1.55) (xy 2.375 -0.9) (xy 2.125 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_poly
+			(pts
+				(xy 2.625 -1.55) (xy 2.875 -1.55) (xy 2.875 -0.9) (xy 2.625 -0.9)
+			)
+			(stroke
+				(width 0.01)
+				(type solid)
+			)
+			(fill yes)
+			(layer "F.Paste")
+		)
+		(fp_line
+			(start -4.25 -2.15)
+			(end -4.25 2.15)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+		)
+		(fp_line
+			(start -4.25 2.15)
+			(end 4.25 2.15)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+		)
+		(fp_line
+			(start 4.25 -2.15)
+			(end -4.25 -2.15)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+		)
+		(fp_line
+			(start 4.25 2.15)
+			(end 4.25 -2.15)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+		)
+		(fp_line
+			(start -4 -1.9)
+			(end 4 -1.9)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.Fab")
+		)
+		(fp_line
+			(start -4 -1)
+			(end -4 -1.9)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.Fab")
+		)
+		(fp_line
+			(start -4 -1)
+			(end -4 1.9)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.Fab")
+		)
+		(fp_line
+			(start -4 1.9)
+			(end 4 1.9)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.Fab")
+		)
+		(fp_line
+			(start 4 -1.9)
+			(end 4 -1)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.Fab")
+		)
+		(fp_line
+			(start 4 -1)
+			(end -4 -1)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.Fab")
+		)
+		(fp_line
+			(start 4 1.9)
+			(end 4 -1)
+			(stroke
+				(width 0.127)
+				(type solid)
+			)
+			(layer "F.Fab")
+		)
+		(fp_circle
+			(center 2.25 -2.45)
+			(end 2.85 -2.45)
+			(stroke
+				(width 0.2)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+		)
+
+
+
+
+
+
+
+
+
+
+		(pad "1" smd rect
+			(at 2.75 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "1")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "2" smd rect
+			(at 2.25 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "2")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "3" smd rect
+			(at 1.75 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "3")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "4" smd rect
+			(at 1.25 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "4")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "5" smd rect
+			(at 0.75 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "5")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "6" smd rect
+			(at 0.25 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "6")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "7" smd rect
+			(at -0.25 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "7")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "8" smd rect
+			(at -0.75 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "8")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "9" smd rect
+			(at -1.25 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "9")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "10" smd rect
+			(at -1.75 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "10")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "11" smd rect
+			(at -2.25 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "11")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "12" smd rect
+			(at -2.75 -1.15)
+			(size 0.3 0.8)
+			(layers "F.Cu")
+			(pinfunction "12")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "S1" smd rect
+			(at 3.75 1.35)
+			(size 0.4 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(solder_mask_margin 0.102)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(pad "S2" smd rect
+			(at -3.75 1.35)
+			(size 0.4 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(solder_mask_margin 0.102)
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+		)
+		(embedded_fonts no)
+		(model "${KIPRJMOD}/parts/FH34SRJ-10S-0.5SH_50_.step"
+			(offset
+				(xyz 0 0 0.66)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 -0 -0)
+			)
+		)
+	)

@@ -1,0 +1,56 @@
+Vendor 3D models and footprints: terms not established
+======================================================
+
+This is not a licence. It is a placeholder that records an honest gap, so that the
+repository does not claim rights it does not have.
+
+The files under `parts/` are 3D models (STEP, OBJ, STL) and footprints for purchased
+components. They came from the component manufacturers themselves and from library
+portals that redistribute manufacturer data. For none of them do we hold a licence
+document, and most vendors publish such models without stating any terms at all.
+
+What that means in practice:
+
+* We grant no rights in these files. Our own licences (CERN-OHL-S-2.0 for the hardware,
+  MIT for tools and documentation) do not extend to them.
+* They are kept in the repository because the board references them 30 times and the
+  3D view and the mechanical checks do not work without them. They carry no electrical
+  or geometric information that is not already in the footprints.
+* If you redistribute this repository, or any derivative of it, check this directory
+  against your own requirements first. If you need a repository that is clean in this
+  respect, delete `parts/` and fetch the models again from each manufacturer; the board
+  files will open with missing 3D models and nothing else will change.
+* Nothing in `parts/` is needed to fabricate or assemble the board. The Gerbers, the
+  drill files, the BOM and the CPL are complete without it.
+
+Affected components, by the file names in `parts/`: Molex 1054500101 (USB-C), TE
+1775443-2, Johanson 2450AT18A100E (antenna), Murata BLM18PG121SN1D and BLM18PG300SN1D
+(ferrite beads), CHS-01TA and the remaining entries of that directory.
+
+
+The same applies to part of `lib_lokal/`
+=======================================
+
+`lib_lokal/` holds the symbol and footprint libraries the design references. Most of it is
+either a trimmed excerpt from the KiCad standard libraries (CC-BY-SA-4.0, attributed, see
+LICENSES/CC-BY-SA-4.0.txt) or work that came with the upstream design. But three groups in
+it have the same gap as `parts/`:
+
+* **`Onju.pretty`** — 23 footprints that arrived with the upstream design. **Ten of them
+  carry a SnapEDA or EasyEDA note** in the file; the other thirteen carry none.
+* **`New_Library.kicad_sym` and `FH34SRJ-10S-0.5SH_50_.kicad_sym`** — SnapEDA symbols.
+  `New_Library` holds 58 of the symbol instances in this design, so it cannot simply be
+  dropped.
+* **`Seeed_libadl`, `Seeed_libdb`, `libdb`, `reSpeaker`, `0_Seeed_Misc`** — symbols from
+  Seeed's reSpeaker project, 32 instances in total.
+
+These files reach us through the upstream repository, which publishes them under
+CERN-OHL-S v2, and we pass them on unchanged. We hold no licence document for the parts that
+originally came from a library portal, so **we cannot warrant their terms** and we grant no
+rights in them beyond passing on what we received.
+
+Unlike `parts/`, this directory **cannot** simply be deleted: without it the design does not
+open. If you need a repository that is clean in this respect, the symbols and footprints
+concerned have to be redrawn from the manufacturers' datasheets. The pad geometry is in the
+board file either way, so the board itself does not depend on the library files for
+fabrication.

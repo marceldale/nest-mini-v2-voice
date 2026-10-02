@@ -1,0 +1,22 @@
+(version 1)
+
+# Netzklasse "UART-eng" (UART_TX, UART_RX): Bahn und Verbindung duerfen 0,10 mm schmal sein.
+#
+# Grund: der Zugang zum Steckerbereich J6 traegt nur eine Leiterbahn von 0,15 mm, aber zwei von
+# 0,10 mm (AENDERUNGEN.md, Abschnitte 101 und 102). Die Board-Bedingungen bleiben fuer alles
+# uebrige bei 0,127 mm; nur diese zwei Signale duerfen schmaler werden.
+#
+# Fertigbarkeit belegt am 30.09.2026:
+#   jlcpcb.com/capabilities/pcb-capabilities -- mehrlagig, 1 oz: "0.09 / 0.09 mm (3.5 / 3.5 mil)"
+#   jlcpcb.com/help/article/in-what-cases-will-there-be-charged-extra -- Aufpreis von 20 % erst
+#   bei 3,0...3,5 mil; 0,10 mm sind 3,94 mil und damit aufpreisfrei.
+
+(rule "UART-eng: Bahnbreite ab 0,10 mm"
+	(condition "A.NetClass == 'UART-eng'")
+	(constraint track_width (min 0.1mm))
+)
+
+(rule "UART-eng: Verbindungsbreite ab 0,10 mm"
+	(condition "A.NetClass == 'UART-eng'")
+	(constraint connection_width (min 0.1mm))
+)
