@@ -39,8 +39,10 @@ pair, same audio architecture, same ESPHome firmware base — fitted into the Ne
 size, power and mounting constraints.
 
 **What you need:** a Nest Mini (2nd gen), this board (assembled), a Home Assistant
-installation and a USB-C cable for the ESP32. The XMOS needs its first image over JTAG (J4, an
-XTAG4 adapter) until the ESP32-side flasher is written — see Highlights. If you
+installation and a USB-C cable for the ESP32. The XMOS gets its first image from the ESP32 itself
+(a two-step button in Home Assistant; written and compiled, not yet run on hardware — see
+Highlights), or over JTAG (J4, an XTAG4 adapter). Wi-Fi can be set up over Bluetooth (Improv,
+confirmed by touching the centre button, as on Voice PE). If you
 run it from USB rather than from the Nest Mini's own 14 V base plate, use a supply that can give
 **1 A** — at full LED brightness the board draws up to 0.8 A, so a plain 500 mA charger is not
 enough. On USB alone the amplifier has no supply — PVDD comes only from the 14 V rail (R66) — so
@@ -52,10 +54,20 @@ prototype stage (see status above). No affiliation with Google.
 
 ## Highlights
 
-* **XMOS flash reachable from the ESP32 — hardware only, so far.** A bus switch (U16, after the
-  Satellite1 principle) lets the ESP32 write the XMOS flash directly. **The ESP32 software for
-  that is not written yet.** Until it exists, the first XMOS image goes in over JTAG: J4 is an
-  xSYS2 pad field, an XTAG4 plugs on 1:1. Later updates run over I²C (DFU) from the ESP32.
+* **XMOS flash written from the ESP32.** A bus switch (U16, after the Satellite1 principle) lets
+  the ESP32 write the XMOS flash directly; the ESPHome component
+  [`xmos_flasher`](firmware/esphome/components/xmos_flasher/README.md) does it from a two-step
+  button in Home Assistant. **Written and compiled, not yet run on hardware.** JTAG stays as the
+  fallback: J4 is an xSYS2 pad field, an XTAG4 plugs on 1:1. Later updates run over I²C (DFU) from
+  the ESP32.
+
+  **What the button overwrites:** the whole **1 MiB boot partition** of the XMOS flash U11 is
+  erased (256 sectors) and rewritten with the factory image `firmware/xmos/ffva_v1.3.1_factory.bin`
+  (286 720 bytes), checked against its MD5 and read back; everything after the image must read
+  FFh. An image that a later DFU update put there is replaced by 1.3.1 as well. The data partition
+  above 1 MiB is not touched, and the flash status registers are only read, never written — a
+  write-protected flash is reported, not unlocked. The write is refused on USB alone (no 14 V, no
+  PVDD), needs the enable switch first and takes about 15 s; on success the ESP32 restarts.
 
 * **Audio path as on Voice PE.** ESP32 feeds the amplifier and the echo reference on one
   line; XU316 is the clock master. Works with the unmodified Voice PE XMOS firmware.
@@ -92,7 +104,8 @@ prototype stage (see status above). No affiliation with Google.
 - [x] Rev A2 manufacturing files regenerated after the audit fixes (`fertigung/`, 1 Oct 2026)
 - [x] Rotation check of the 31 changed or new parts in the fabricator's assembly preview
       (JLCPCB preview, 2 Oct 2026; U18, U16, U5, Q4 corrected in the CPL beforehand, Y1 by order remark)
-- [ ] ESP32-side flasher for the XMOS image (until then: first image over J4 with an XTAG4)
+- [x] ESP32-side flasher for the XMOS image — written and compiled, not yet run on hardware
+      (`firmware/esphome/components/xmos_flasher/`; fallback: J4 with an XTAG4)
 - [x] Rev A2 ordered: 2 assembled boards (5 bare PCBs), JLCPCB, 2 Oct 2026
 - [ ] Bring-up: resistance check, power rails, XMOS flash via ESP32
 - [ ] Audio, microphones, echo cancellation, touch, LEDs
@@ -116,6 +129,7 @@ their respective owners and are used here only to say what this board is compati
 | Hardware — schematic, layout, our footprints, manufacturing data | **CERN-OHL-S v2** |
 | ESPHome YAML, Python tools, documentation | **MIT** |
 | XMOS firmware image under `firmware/xmos/` | **XMOS Public Licence v1** — not ours |
+| ESPHome component `xmos_flasher` under `firmware/esphome/components/` | **GPL-3.0-only** for the C++ files — derived from [FutureProofHomes/Satellite1-ESPHome](https://github.com/FutureProofHomes/Satellite1-ESPHome) (`memory_flasher`, © Mischa Siekmann, commit `8f8906c`), whose `LICENSE` is the ESPHome licence: C/C++ under GPLv3 without "or any later version", Python under MIT. `__init__.py`, the README and the host test are **MIT**. See [`LICENSES/GPL-3.0-only.txt`](LICENSES/GPL-3.0-only.txt) |
 | ESPHome component `tas58xx` under `firmware/esphome/components/` | **GPL-3.0-or-later** — © mrtoy-me, based on work by Andriy Malyshenko (sonocotta); patched by us (start-up order, loop bandwidth), see [`firmware/esphome/PATCH.md`](firmware/esphome/PATCH.md) |
 | KiCad library excerpts in `lib_lokal/` | **CC-BY-SA-4.0**, © KiCad Libraries Contributors |
 | Parts of `lib_lokal/` (vendor footprints and symbols) | **terms not established** — see below |
@@ -143,9 +157,9 @@ exception for designs that *use* the libraries but states that it does not apply
 redistributed as a collection — which is what this directory does — so those files keep
 CC-BY-SA-4.0 with attribution.
 
-The only C++ code in this repository is the patched copy of the ESPHome component `tas58xx` under
-`firmware/esphome/components/` (GPL-3.0-or-later, see the table above); any further ESPHome
-components would be GPL-3.0-or-later as well.
+The C++ code in this repository is the patched copy of the ESPHome component `tas58xx`
+(GPL-3.0-or-later) and the component `xmos_flasher` (GPL-3.0-only, because its source states GPLv3
+without "or later"), both under `firmware/esphome/components/`; see the table above.
 CERN-OHL-S v2 is a **strongly reciprocal** licence: if you make and distribute a board from
 these files, or from a modified version of them, you have to make the complete source of your
 version available under the same licence. See

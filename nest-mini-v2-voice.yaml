@@ -32,7 +32,7 @@ esphome:
   #     ueber framework: version: recommended). Voice PE d4e6fa4: ebenso.
   min_version: 2026.9.0
   on_boot:
-    then:
+    - then:
       - light.turn_on:
           id: led_ring
           effect: slow_pulse
@@ -59,6 +59,22 @@ esphome:
           blue: 0%
       - delay: 1s
       - script.execute: reset_led
+    # MPR121: nur ELE0-ELE2 messen. ESPHome schaltet die Elektroden als Bereich 0..n ein und
+    # setzt n mindestens auf 3 (mpr121/__init__.py: max_touch_channel = 3; ECR = 0x80 | (n + 1)
+    # = 0x84), misst also auch ELE3. ELE3-ELE11 liegen auf einem gemeinsamen Netz mit R73
+    # (1 MOhm) nach GND, wie in der Gen1-Basis 7de6eec6. Datenblatt MPR121 Rev. 4 (02/2013),
+    # Abschnitt 5.11: nur die benutzten Kanaele einschalten spart Abtastzeit; nicht
+    # eingeschaltete Elektroden sind hochohmig (Abschnitt GPIO, S. 20). ECR 0x83 = CL 10,
+    # ELE0-ELE2. Erst in den Stop Mode (0x00), dann in den Run Mode; nach dem setup() der
+    # Komponente, das ECR nach 100 ms schreibt.
+    - priority: -100
+      then:
+        - delay: 500ms
+        - lambda: |-
+            if (!id(mpr121_component).is_failed()) {
+              id(mpr121_component).write_byte(0x5E, 0x00);
+              id(mpr121_component).write_byte(0x5E, 0x83);
+            }
 
 
 # Pin-Audit U8-B6: auf der Platine belegt, in dieser Firmware absichtlich ungenutzt (Reserve, nach
@@ -99,6 +115,14 @@ wifi:
   output_power: 8.5dB
   power_save_mode: none
   reboot_timeout: 10min
+  # BLE-Improv wie Voice PE (home-assistant-voice.factory.yaml, d4e6fa43d6): nach der
+  # Verbindung Bluetooth aus (5 s fuer die Improv-Rueckmeldung), bei Verlust wieder an.
+  on_connect:
+    - delay: 5s
+    - ble.disable:
+    - script.execute: control_leds
+  on_disconnect:
+    - ble.enable:
   # F4: feste Adresse entfernt, das Geraet holt sie sich per DHCP. Die Eintraege
   #     dns1 und dns2 in secrets.yaml werden damit nicht mehr gebraucht.
   ap:
@@ -106,6 +130,23 @@ wifi:
     password: !secret wifi_pass
 
 captive_portal:
+
+# WLAN-Einrichtung ueber Bluetooth (Improv), Freigabe durch Beruehren der mittleren Taste
+# (MPR121 Kanal 1, id action) - wie Voice PE `authorizer: center_button`.
+esp32_ble:
+  name: ${device_name}
+
+esp32_improv:
+  authorizer: action
+  on_start:
+    - lambda: id(improv_ble_in_progress) = true;
+    - script.execute: control_leds
+  on_provisioned:
+    - lambda: id(improv_ble_in_progress) = false;
+    - script.execute: control_leds
+  on_stop:
+    - lambda: id(improv_ble_in_progress) = false;
+    - script.execute: control_leds
 
 web_server:
   port: 80
@@ -135,6 +176,46 @@ api:
         - script.execute: clear_notification
 
 button:
+  # XMOS-Erstbespielung/Wiederherstellung ueber den Bus (xmos_flasher). Zweistufig: erst den
+  # Schalter "XMOS-Flash freigeben" einschalten (faellt nach 60 s von selbst zurueck), dann diese
+  # Taste. Nie beim Start. Abgelehnt, wenn die Endstufe keine PVDD meldet (Betrieb nur an USB) oder
+  # schon ein Schreibvorgang laeuft. Siehe firmware/esphome/components/xmos_flasher/README.md.
+  - platform: template
+    id: xmos_flash_schreiben
+    name: "XMOS-Flash schreiben"
+    icon: "mdi:chip"
+    entity_category: config
+    on_press:
+      - if:
+          condition:
+            and:
+              - switch.is_on: xmos_flash_freigabe
+              - not:
+                  xmos_flasher.in_progress: xmos_flasher_component
+              # 14 V vorhanden: Endstufe eingerichtet und keine PVDD-Unterspannung (PVDD nur aus +14V).
+              # Bei leerem U11 laeuft der XU316 nicht; tas58xx wird dann ohne I2S-Takt eingerichtet
+              # (I2C geht trotzdem) - am Muster nachweisen (HANDGRIFFE 6.8).
+              - lambda: |-
+                  if (id(tas5805m_dac).is_failed()) {
+                    ESP_LOGW("xmos_flasher", "Abgelehnt: Endstufe nicht eingerichtet (14 V nicht belegbar)");
+                    return false;
+                  }
+                  if (id(endstufe_pvdd_uv).state) {
+                    ESP_LOGW("xmos_flasher", "Abgelehnt: PVDD-Unterspannung - nur USB, keine 14 V");
+                    return false;
+                  }
+                  return true;
+          then:
+            - switch.turn_off: xmos_flash_freigabe
+            - micro_wake_word.stop:
+            - voice_assistant.stop:
+            - media_player.stop: external_media_player
+            - delay: 500ms
+            - xmos_flasher.write: xmos_flasher_component
+          else:
+            - logger.log:
+                level: WARN
+                format: "XMOS-Flash abgelehnt: Freigabe aus, Schreibvorgang laeuft, oder keine 14 V (PVDD)"
   - platform: restart
     name: "${friendly_name} Neustart"
   - platform: safe_mode
@@ -207,6 +288,16 @@ globals:
 
 
 switch:
+  - platform: template
+    id: xmos_flash_freigabe
+    name: "XMOS-Flash freigeben"
+    icon: "mdi:shield-alert-outline"
+    entity_category: config
+    optimistic: true
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      - delay: 60s
+      - switch.turn_off: xmos_flash_freigabe
   # This is the master mute switch. It is exposed to Home Assistant. The user can only turn it on and off if the hardware switch is off. (The hardware switch overrides the software one)
   - platform: template
     id: master_mute_switch
@@ -345,6 +436,7 @@ binary_sensor:
     right_channel_dc_fault:
       name: "Endstufe DC-Fehler rechts"
     pcdd_under_voltage:
+      id: endstufe_pvdd_uv
       name: "Endstufe PVDD Unterspannung"
     pcdd_over_voltage:
       name: "Endstufe PVDD Ueberspannung"
@@ -1212,11 +1304,40 @@ voice_kit:
   #     sind Boot-Modi). Extern haengt an GPIO46 nur R47 und dahinter R48 470k
   #     nach GND - kein Pull-up, der Pin liest beim Reset 0. Ausgang ist
   #     moeglich (Tab. 2-4 IO MUX, S. 22: GPIO46 I/O/T).
-  reset_pin: GPIO46
+  reset_pin:
+    number: GPIO46
+    # Auch xmos_flasher schaltet GPIO46 (Reset des XU316 und Busumschalter U16 haengen an
+    # demselben Netz XU316_RST).
+    allow_other_uses: true
   firmware:
     url: https://github.com/esphome/voice-kit-xmos-firmware/releases/download/v1.3.1/ffva_v1.3.1_upgrade.bin
     version: "1.3.1"
     md5: 964635c5bf125529dab14a2472a15401
+
+# Bus-Flasher fuer den XU316 (firmware/esphome/components/xmos_flasher, Herkunft Satellite1-ESPHome).
+# Schreibt das Werksabbild in U11, wenn dieser leer oder beschaedigt ist; danach Neustart, voice_kit
+# liest die Version und haelt sie per DFU aktuell. Bus: CLK GPIO3 und D0 GPIO4 fest am XU316-QSPI,
+# CS_N GPIO39 und MISO GPIO40 ueber U16; GPIO46 hoch = XU316 im Reset und U16 auf den ESP32.
+xmos_flasher:
+  id: xmos_flasher_component
+  image_file: firmware/xmos/ffva_v1.3.1_factory.bin
+  md5_file: firmware/xmos/MD5SUMS
+  reset_pin:
+    number: GPIO46
+    allow_other_uses: true
+  frequency: 4MHz
+  progress:
+    name: "XMOS-Flash Fortschritt"
+  status:
+    name: "XMOS-Flash Status"
+  on_success:
+    - logger.log: "XMOS-Werksabbild geschrieben und geprueft - Neustart"
+    - delay: 3s
+    - lambda: 'App.safe_reboot();'
+  on_failure:
+    - logger.log:
+        level: ERROR
+        format: "XMOS-Flash fehlgeschlagen (Status-Sensor nennt die Stelle)"
 
 external_components:
   # Pin-Audit U10-B7: GPIO3 und GPIO4 haengen ohne Trennung an QSPI_CLK und QSPI_D0 des
@@ -1246,6 +1367,7 @@ external_components:
       path: firmware/esphome/components
     components:
       - tas58xx
+      - xmos_flasher
 
 # --- F1 (Befund 15 / B4): Endstufe TAS5805M ansteuern -------------------------
 # Die Konfiguration des Betreibers steuerte den Verstaerker ueberhaupt nicht an.
@@ -1588,6 +1710,10 @@ voice_assistant:
   auto_gain: 0 dbfs
   volume_multiplier: 1
   on_client_connected:
+    # Wie Voice PE (va_connected_wait_for_ble): erst wenn BLE aus ist.
+    - wait_until:
+        not: ble.enabled
+    - delay: 2s
     - lambda: id(init_in_progress) = false;
     - micro_wake_word.start:
     - lambda: id(voice_assistant_phase) = ${voice_assist_idle_phase_id};

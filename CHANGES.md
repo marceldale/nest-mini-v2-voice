@@ -709,6 +709,49 @@ This file is derived from upstream `MiciMike.yaml`, which is unchanged in this r
   RAM 43.0 %, flash 28.1 % of one 8 MB OTA slot, image 2 283 639 bytes); warnings only from
   third-party code and the deliberate strapping pin GPIO46.
 
+### XMOS flash written from the ESP32 (`xmos_flasher`, 2 Oct 2026)
+
+The bus switch U16 was in the hardware since rev A2; the software to use it is now there. The ESPHome
+component `firmware/esphome/components/xmos_flasher/` writes the XU316 factory image
+`firmware/xmos/ffva_v1.3.1_factory.bin` into U11 from the ESP32: GPIO46 holds the XU316 in reset and
+switches U16, the ESP32 drives the flash over SPI2 (GPIO3/4/39/40, 4 MHz), checks the JEDEC ID
+(EF 40 16), QE = 1 and the protection bits, erases the **whole 1 MiB boot partition**, writes and reads
+back every page, verifies the MD5 against `firmware/xmos/MD5SUMS` and that the rest of the partition
+is FFh, releases the bus and restarts. The data partition above 1 MiB is not touched; the status
+registers are only read. The image is embedded at compile time; the build fails on an MD5 mismatch.
+
+* **Trigger:** two steps in Home Assistant — switch "XMOS-Flash freigeben" (falls back after 60 s),
+  then button "XMOS-Flash schreiben". Refused on USB alone (amplifier not set up or PVDD
+  under-voltage, i.e. no 14 V), as the bring-up order demands.
+* **Origin and licence:** derived from FutureProofHomes/Satellite1-ESPHome, commit `8f8906c`
+  (2 Oct 2026), components `memory_flasher` by Mischa Siekmann. Its `LICENSE` (blob `746e0ab`) is the
+  ESPHome licence: C/C++ files "published under the GPLv3 license", Python under MIT, with the GPL
+  version 3 text attached; "or any later version" appears only in the GPL's own how-to-apply
+  appendix, not as a grant. Hence **GPL-3.0-only** for `xmos_flasher.h/.cpp` and `flash_plan.h`
+  (`LICENSES/GPL-3.0-only.txt`), **MIT** for `__init__.py`, both naming the original author.
+* **Checked:** host test `firmware/esphome/tests/test_xmos_flasher.py` 6/6 against a simulated
+  W25Q32JV (wrong JEDEC ID, QE = 0, protection bits, stuck bit, busy flash, oversize image, odd
+  lengths); `esphome compile` without a warning from the component; a line-by-line review against
+  Satellite1. **Not yet run on hardware** — bring-up steps in the build notes (first board).
+
+### Wi-Fi set-up over Bluetooth (Improv) and MPR121 electrodes (2 Oct 2026)
+
+* **BLE Improv as on Voice PE** (`home-assistant-voice.factory.yaml`, commit `d4e6fa43d6`):
+  `esp32_ble` + `esp32_improv` with `authorizer: action` — the centre touch key (MPR121 channel 1)
+  confirms a provisioning request, as `center_button` does on Voice PE. Bluetooth is switched off
+  5 s after Wi-Fi connects and back on when Wi-Fi drops; the voice assistant waits for Bluetooth to
+  be off before it starts (Voice PE's `va_connected_wait_for_ble`). The LED states for Improv were
+  already in the YAML. Cost: firmware 2 600 751 → 2 941 675 bytes (36.2 %), RAM 43.6 → 49.9 %.
+* **MPR121 ELE3–ELE11 are not open.** They share one net with **R73, 1 MΩ to GND** — the same as the
+  Gen1 basis `7de6eec6`. The MPR121 datasheet (Rev. 4, 02/2013) has no pin rule for unused
+  electrodes; it states that electrodes not enabled in the ECR and GPIOs not enabled are high
+  impedance (section 5.14, GPIO), and that enabling only the used channels saves scan time
+  (section 5.11). Auto-configuration is not used (ESPHome leaves register 0x7B at 0). ESPHome
+  enables the electrodes as a range and never fewer than ELE0–ELE3 (`max_touch_channel` at least
+  3, ECR = 0x84), so ELE3 — the common net — was measured as well, without effect on the three
+  keys but for nothing. A boot action now writes ECR = **0x83** (ELE0–ELE2) after the component's
+  set-up. No design change.
+
 ## 9. Production data (`production/`)
 
 This folder is new. See `README.md`, section "This fork".
