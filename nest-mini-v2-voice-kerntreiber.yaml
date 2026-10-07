@@ -1,5 +1,18 @@
 # SPDX-FileCopyrightText: 2026 marceldale
 # SPDX-License-Identifier: MIT
+# VARIANTE mit dem ESPHome-Kerntreiber tas58xx (eingebaut in ESPHome dev seit #19595, 30.09.2026; geprüft
+# am Stand 3cc4df4b3a) statt der gepatchten Kopie firmware/esphome/components/tas58xx. Braucht ESPHome
+# >= 2026.10 (dev). Erzeugt aus nest-mini-v2-voice.yaml (AENDERUNGEN 163, 166); nur zum Vergleich, nicht der
+# Serienstand. Unterschiede:
+#   - external_components: kein tas58xx (eingebaut); die gepatchte Kopie wird nicht geladen
+#   - setup_priority 790 bleibt: der Kerntreiber schreibt Reset, Startfolge, PBTL, Gain und PLAY in setup()
+#     ohne auf den I2S-Takt zu warten (tas58xx.cpp init_() Z. 82-113); nur der Mischer wartet (Z. 112, 214-238).
+#     SLASEH5D 7.5.3.1 Schritt 4 verlangt stabile Takte vor Hi-Z/DSP-Freigabe (AENDERUNGEN 166)
+#   - audio_dac: Schema des Kerntreibers (model, ohne modulation/tas58xx_dac)
+#   - binary_sensor: Schluessel pvdd_* statt pcdd_*, dazu clock_fault
+#   - on_boot: ANA_CTRL 0x53 = 0x60 (175 kHz) in Hi-Z nachtragen - der Kerntreiber schreibt 0x53 nicht
+# SPDX-FileCopyrightText: 2026 marceldale
+# SPDX-License-Identifier: MIT
 substitutions:
   # Phases of the Voice Assistant
   # The voice assistant is ready to be triggered by a wake word
@@ -67,8 +80,19 @@ esphome:
     # eingeschaltete Elektroden sind hochohmig (Abschnitt GPIO, S. 20). ECR 0x83 = CL 10,
     # ELE0-ELE2. Erst in den Stop Mode (0x00), dann in den Run Mode; nach dem setup() der
     # Komponente, das ECR nach 100 ms schreibt.
+    # VARIANTE: Der Kerntreiber schreibt ANA_CTRL nicht (Reset 0x00 = 80 kHz). 175 kHz nach SLASEH5D
+    # Tab. 7-27 nachtragen, in Hi-Z wie im TI-Beispiel; danach den vorigen Zustand (PLAY, ggf. Mute).
     - priority: -100
       then:
+        - lambda: |-
+            if (!id(tas5805m_dac).is_failed()) {
+              uint8_t ctrl2;
+              if (id(tas5805m_dac)->write_byte(0x00, 0x00) && id(tas5805m_dac)->read_byte(0x03, &ctrl2)) {
+                id(tas5805m_dac)->write_byte(0x03, (ctrl2 & ~0x03) | 0x02);
+                id(tas5805m_dac)->write_byte(0x53, 0x60);
+                id(tas5805m_dac)->write_byte(0x03, ctrl2);
+              }
+            }
         - delay: 500ms
         - lambda: |-
             if (!id(mpr121_component).is_failed()) {
@@ -463,11 +487,13 @@ binary_sensor:
       name: "Endstufe DC-Fehler links"
     right_channel_dc_fault:
       name: "Endstufe DC-Fehler rechts"
-    pcdd_under_voltage:
+    pvdd_under_voltage:
       id: endstufe_pvdd_uv
       name: "Endstufe PVDD Unterspannung"
-    pcdd_over_voltage:
+    pvdd_over_voltage:
       name: "Endstufe PVDD Ueberspannung"
+    clock_fault:
+      name: "Endstufe Taktfehler"
     over_temp_warning:
       name: "Endstufe Temperaturwarnung"
     over_temp_shutdown:
@@ -1394,7 +1420,6 @@ external_components:
       type: local
       path: firmware/esphome/components
     components:
-      - tas58xx
       - xmos_flasher
 
 # --- F1 (Befund 15 / B4): Endstufe TAS5805M ansteuern -------------------------
@@ -1419,7 +1444,7 @@ audio_dac:
     id: tas5805m_dac
     i2c_id: internal_i2c
     address: 0x2C          # B1: R70 legt ADR auf 0x2C; der Baustein setzt sonst 0x2D
-    tas58xx_dac: TAS5805M
+    model: tas5805m
     enable_pin: GPIO18     # AUDIO_PA_EN -> U14.12 /PDN
     # K-B5 (Pin-Audit 01.10.2026): erst nach voice_kit einrichten. tas58xx hat
     # Prioritaet IO (900, tas58xx.h Z. 28), voice_kit HARDWARE - 1 (799, voice_kit.h
@@ -1450,7 +1475,6 @@ audio_dac:
                            # Es bleibt der Bausteinstandard (L->L, R->R); der Ton kommt
                            # trotzdem, weil der ESP32 mono in beide Slots schreibt.
                            # Die Angabe ist Pflicht fuer PBTL (validate_config).
-    modulation: BD_MODE
     # GRENZE - nicht ueber -12dB einstellen (also nicht -11dB, -6dB, 0dB ...):
     #   Die analoge Verstaerkung legt die Vollaussteuerung fest (Skala auf 29,5 V,
     #   SLASEH5D Tab. 7-2). -12dB -> 7,41 V Spitze an 4 Ohm -> ~1,85 A Spitzenstrom

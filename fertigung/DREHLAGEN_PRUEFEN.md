@@ -66,6 +66,43 @@ Quelle der Footprint-Daten: JLCEDA/EasyEDA Official Library (https://lceda.cn/,
 https://easyeda.com), abgerufen am 02.10.2026 ueber
 `easyeda.com/api/products/<LCSC>/components`.
 
+## JLCPCB-DFM-Rückfrage LED-Polarität (05.10.2026) — Ansichtskonvention und Sollage
+
+**Ansicht in JLCPCBs DFM-Bildern:** Die Unterseite wird **links-rechts gespiegelt** gezeigt, so dass
+der Bestückungsdruck lesbar ist: **J1 oben links**, auf der LED-Seite liegt **LED5 links, LED2 rechts**.
+Das ist dieselbe Ansicht wie KiCads „Flip board view“ (Spiegelung um die senkrechte Achse) und wie die
+Spalte „Pin 1 in der Vorschau“ dieser Datei für Bauteile auf der Unterseite. Die Oberseite wird
+ungespiegelt gezeigt (J1 oben rechts).
+
+**Befund (Betreiber, DFM-Bild zu SMT026100262223):** Das JLCPCB-Modell zeigte bei LED2–LED5 „+“ und den
+Pin-1-Punkt **unten links**, „−“ oben rechts, DI oben links, DO unten rechts. In dieser Ansicht liegt
+unser Pad 1 (+5V) aber **oben rechts** → Modell **um 180° falsch**. LED1 war richtig. Der Betreiber hat
+JLCPCB um eine 180°-Drehung von LED2–LED5 und ein neues Bild gebeten (05.10.2026). **Ergebnis:** JLCPCB hat
+LED2–LED5 um 180° korrigiert; neues Bild vom 05.10.2026 zeigt +5V oben rechts in der gespiegelten
+Unteransicht — vom Betreiber freigegeben. LED1 bestätigt, **LED6 nicht ausdrücklich bestätigt** (Sichtprüfung
+bei der Inbetriebnahme, Arbeitsnotizen, nicht veröffentlicht: HANDGRIFFE Schritt 0.7). Fertigung freigegeben, Fertigstellung ca. 14.10.2026.
+
+**Merkregel für künftige Vorschauen bei JLCPCB:** Oberseite ungespiegelt (J1 oben rechts); Unterseite
+links-rechts gespiegelt (J1 oben links). Die Spalte „Pin 1 in der Vorschau“ dieser Datei gilt genau in dieser
+Ansicht. Ein Modell, dessen Pin-1-Punkt an einer anderen Ecke liegt, ist zu beanstanden — auch wenn der
+EasyEDA-Abgleich nummerngleich passt (LED2–LED5, 05.10.2026).
+Widerspruch zum EasyEDA-Abgleich vom 02.10.2026: dort passen bei CPL 90° alle 4 Pads des EasyEDA-Footprints
+von C2909058 nummerngleich auf unsere Pads. JLCPCBs Bestückmodell weicht also vom EasyEDA-Footprint ab
+(Pin-1-Lage), oder die Nummerierung im EasyEDA-Footprint passt nicht zum Gehäuse — ungeklärt. Für eine
+Folgefertigung: Arbeitsnotizen (nicht veröffentlicht), HANDGRIFFE Abschnitt 6, F4.
+
+**Sollage je LED in JLCPCBs Ansicht**
+
+| Bauteil | Seite / Ansicht | +5V | GND | DIN | DOUT | Gehäusemerkmal |
+|---|---|---|---|---|---|---|
+| LED2, LED3, LED4, LED5 (SK6812-EC20, Pin 1 = VDD) | unten, gespiegelt (J1 oben links) | **oben rechts** (Pad 1) | unten links (Pad 3) | unten rechts (Pad 4) | oben links (Pad 2) | Kerbe auf der Gehäuseunterseite an der Kante +5V/DOUT, also **oben**; IC-Chip an der Kante GND/DIN (unten) |
+| LED1 (SK6812D-EC3210R, westliche Lasche) | oben, ungespiegelt (J1 oben rechts) | 2. Pad von Süden (Pad 4) | 2. Pad von Norden (Pad 1) | Südende (Pad 3) | Nordende (Pad 2) | Linse nach Westen (Platinenkante); kein Punkt im Datenblatt |
+| LED6 (SK6812D-EC3210R, östliche Lasche) | oben, ungespiegelt | 2. Pad von Norden (Pad 4) | 2. Pad von Süden (Pad 1) | Nordende (Pad 3) | Südende (Pad 2) | Linse nach Osten (Platinenkante) |
+
+Reihenfolge auf der LED-Seite in dieser Ansicht von links nach rechts: LED5, LED4, LED3, LED2; der DO jeder
+LED zeigt zum DI der links benachbarten. Sollbild: `pruefung/jlcpcb_led_sollage_2026-10-05.png` (dort in der
+anderen Spiegelung, oben/unten — Pad-Netze gleich).
+
 ## Was nach rev A1 neu zu pruefen ist
 
 Fuer diese **15** Bauteile hat sich die LCSC-Nummer geaendert oder das Bauteil ist neu.
@@ -95,7 +132,8 @@ Bei den vier Ring-LEDs ist die Erwartung, dass sich **nichts** aendert: beide LE
 haben die Anschluesse an denselben Stellen (Datenblaetter SK6805-EC20-001 Rev. A1 und
 SK6812-EC20-001 Rev. A/2, je Seite 4), und die CPL-Werte sind vor und nach dem Wechsel
 gleich. Zu pruefen ist allein, ob JLCPCBs Footprint fuer C2909058 dieselbe Nullage hat
-wie der fuer C2890036.
+wie der fuer C2890036. **Ergebnis 05.10.2026: nein** — JLCPCBs Modell lag um 180° falsch (Abschnitt
+„JLCPCB-DFM-Rückfrage LED-Polarität“).
 
 ## Nach den Audit-Fixes vom 01.10.2026 zusaetzlich zu pruefen
 

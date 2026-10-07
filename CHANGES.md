@@ -665,8 +665,10 @@ This file is derived from upstream `MiciMike.yaml`, which is unchanged in this r
     it set PBTL and −12 dB. It is now loaded from a local, patched copy
     (`firmware/esphome/components/tas58xx`, upstream `89f29cf` plus two lines, see
     `firmware/esphome/PATCH.md`): the register table ends in Hi-Z, PLAY follows PBTL and the gain.
-    The copy is GPL-3.0-or-later (© mrtoy-me, based on work by Andriy Malyshenko); the change is
-    also prepared as a pull request upstream.
+    The copy is GPL-3.0-or-later (© mrtoy-me, based on work by Andriy Malyshenko); the change was
+    submitted upstream as PR #4, now closed; per maintainer's comment in mrtoy-me/esphome-tas58xx#4
+    the start-up order is covered by his development branch and by the ESPHome core driver
+    (esphome/esphome#19971).
   * **K-B5, start-up after the XU316 reset:** `setup_priority: 790` for the amplifier, below
     `voice_kit` (799), so PDN, configuration and PLAY follow the XU316 reset; the TAS5805M waits in
     Hi-Z for the clocks (datasheet 7.3.4). **The transition to PLAY is coupled to the XU316 being
@@ -680,6 +682,17 @@ This file is derived from upstream `MiciMike.yaml`, which is unchanged in this r
     PLAY). Only if `voice_kit` fails (no XU316) does set-up continue without clocks; the device then
     stays in clock-error Hi-Z (7.3.4). Checked at bring-up: register 0x71 = 0 after start, sound,
     and the `tas58xx` set-up logged after `[voice_kit] DFU version`.
+    The same holds for the ESPHome core `tas58xx` component (ESPHome dev, commit
+    `3cc4df4b3a5ce55efe26237ee99d71fff90b8e50`, `esphome/components/tas58xx/tas58xx.cpp`): `init_()`
+    (lines 82–113) resets the device, writes the start-up table, PBTL and the gain and sets PLAY
+    (line 107) inside `setup()`, without waiting for the I²S clock; only the mixer coefficients wait for
+    it (line 112, `on_audio_started()` lines 214–222, `update()` lines 236–238), and the device itself
+    waits in Hi-Z (`tas58xx.h` line 85). The datasheet asks for stable clocks before Hi-Z and DSP
+    enable (7.5.3.1 step 4), so `setup_priority: 790` stays with the core component as well.
+  * **Amplifier fault handling (5 Oct 2026):** the copy cleared every fault on the next 1 s update,
+    DC and over-current faults included, which restarts the output while a DC fault (re-tripping only
+    after 570 ms, datasheet 7.5.3.3) is present. It now leaves those faults set and the output off until
+    the device restarts, as the core component does (`firmware/esphome/PATCH.md`).
   * **Amplifier faults:** the ADR/FAULT pin is not wired to the ESP32, so the fault registers are read
     over I²C with the `tas58xx` binary sensors (any fault, over-current and DC fault per channel, PVDD
     under/over-voltage, over-temperature warning and shutdown).
@@ -721,8 +734,12 @@ is FFh, releases the bus and restarts. The data partition above 1 MiB is not tou
 registers are only read. The image is embedded at compile time; the build fails on an MD5 mismatch.
 
 * **Trigger:** two steps in Home Assistant — switch "XMOS-Flash freigeben" (falls back after 60 s),
-  then button "XMOS-Flash schreiben". Refused on USB alone (amplifier not set up or PVDD
-  under-voltage, i.e. no 14 V), as the bring-up order demands.
+  then button "XMOS-Flash schreiben". Allowed on **USB alone** or on 14 V (changed on 2 Oct 2026; it
+  was refused without PVDD before). Conditions: the device has been up for 30 s and did not last
+  restart from a brown-out — a plausibility check, because no `+5V`/VBUS voltage is readable by the
+  ESP32 — and all LEDs are held off while writing. Load during the write ≈ 0.22 A typical, ≈ 0.40 A
+  with a Wi-Fi transmit burst (U11 programming 25 mA max., XU316 in reset); table in the component
+  README, section "Supply".
 * **Origin and licence:** derived from FutureProofHomes/Satellite1-ESPHome, commit `8f8906c`
   (2 Oct 2026), components `memory_flasher` by Mischa Siekmann. Its `LICENSE` (blob `746e0ab`) is the
   ESPHome licence: C/C++ files "published under the GPLv3 license", Python under MIT, with the GPL
@@ -860,9 +877,19 @@ amps into a fault.
 **Measurement plan.** Every point that could not be decided on paper (result MEASURE AT BRING-UP in
 "Every open point decided") has a written procedure — what, with which instrument, target, limit, and
 what follows from a deviation — in the maintainer's working notes (`HANDGRIFFE.md`, section
-"Inbetriebnahme — Messvorschriften", in German, not published), in the order above: resistance check →
-bench supply → rails → USB → 14 V → firmware → audio → radio → long run and temperature. The limits
-that matter most:
+"Inbetriebnahme — Messvorschriften", in German, not published), as a complete plan with equipment list, target values with their datasheet references and a results
+template, in twelve steps: 0 visual check against `fertigung/DREHLAGEN_PRUEFEN.md` (Y1 first) → 1 resistance
+of every rail to ground → 2 bench supply at TP18, 100 mA limit, rails in order → 3 USB alone → 4 both →
+5 flash the ESP32 → 6 XMOS image (bus flasher, XTAG4 as fallback) → 7 audio → 8 touch, LEDs, BLE Improv →
+9 Wi-Fi against a reference board → 10 long run with temperature → 11 only then the base plate and the
+housing. Two supply variants are written out: **A** with a bench supply (current limit 100 mA until
+firmware runs, 500 mA up to Wi-Fi and LEDs, 1.5 A for audio) — recommended — and **B** without one: first
+USB alone through a USB power meter (expected ≈ 0.2 A with firmware and LEDs off; above 0.3 A without
+firmware means stop), then the 14 V adapter on TP18 through a 12 V halogen lamp in series (5 W for the
+first power-up, about 0.45 A into a short; 20 W for audio, about 1.8 A into a short and ≈ 3.5 V drop at
+0.8 A). The XMOS image can be written on USB alone (variant B, stage 1); the 14 V stage is for sound. Without the base plate the board is muted (MUTE floats high), so the microphones need a wire
+from TP12 to ground on the bench. Target rails: `5V_SW` 5.00 V (4.83–5.18), `3V3` 3.27 V (3.16–3.37),
+`1V8` 1.80 V (±2 %), `VDD` 0.906 V (0.886–0.926), `VMIC` 3.30 V (±1.4 %). The limits that matter most:
 
 | Step | Measurement | Target | Limit / action |
 |---|---|---|---|
@@ -892,7 +919,10 @@ that matter most:
 | Total | **€415.24**, including shipping and import charges |
 | Assembly preview | all 31 changed or new parts checked on 2 Oct 2026; U18, U16, U5 and Q4 correct without manual adjustment after the CPL correction ("Four rotations corrected after the JLCPCB preview"); Y1 placed by the order remark (point 7 below) |
 | Part substitution | R35 = **C100510** (LIZ Elec CR0402FF6800G, 680 Ω 1 %) instead of C25130, ordered |
-| Still open at JLCPCB | two confirmations in the order process: **Production file** and **Parts placement** |
+| JLCPCB confirmations | **Production file** approved on 5 Oct 2026 after comparing JLCPCB's CAM data with ours (panel with break-off tabs, see below). **Parts placement** approved on 5 Oct 2026 after a DFM query on LED polarity: JLCPCB's model placed LED2–LED5 (SK6812-EC20, bottom side) rotated by 180°; corrected by JLCPCB to +5V (pin 1) at the top right in their mirrored bottom view, LED1 confirmed. Production released, completion expected around 14 Oct 2026 |
+| Files | Gerber/drill files in this release are byte-identical to rev-a2-ordered; the files uploaded to JLCPCB on 2 Oct were generated at 08:41 from the same design and differ only in the creation timestamp. |
+| Panel | JLCPCB put the board into a frame for assembly: 5 mm rails top and bottom, a routed gap, mouse bites at the break-off points reaching up to 0.13 mm into the outline, V-score at the top and bottom extreme points of the outline. Copper stays ≥ 0.227 mm from the mouse-bite holes. Deburr the break-off points if needed (bring-up step 0) |
+| Mirrored bottom view | JLCPCB's DFM pictures show the bottom side mirrored left-right (J1 top left, LED5 left, LED2 right), as KiCad's "flip board view"; target positions per LED in `fertigung/DREHLAGEN_PRUEFEN.md` |
 
 The order was made from the design files tagged `rev-a2.1` in this repository. The tag
 `rev-a2-ordered` marks the state with this section added and stands on the **same design and
@@ -1208,7 +1238,7 @@ connection of C83 (M7), the source resistors of `MIC_CLK_M`, and the net next to
 | Supply | VDD3P3_CPU limit when burning eFuses | IMPLEMENTED `d1a3583` | Note under "Do not burn `EFUSE_STRAP_JTAG_SEL`": burn only at `ESP_3V3` ≤ 3.30 V. |
 | Fabrication | GND island on B.Cu with a 0.086 mm neck | VERIFIED NOT NEEDED | If the neck breaks, both parts keep their own GND vias (2 and 1). |
 | Fabrication | Few visible references, small silkscreen texts | VERIFIED NOT NEEDED | Recounted: 25 visible references, 34 texts below 1.0 mm / 0.15 mm; assembly works from the CPL. |
-| Firmware | `tas58xx` has no licence file | IMPLEMENTED `2c536a8` | Patched copy distributed under GPL-3.0-or-later, both authors named, modified files marked; the patch is also prepared as a pull request upstream. |
+| Firmware | `tas58xx` has no licence file | IMPLEMENTED `2c536a8` | Patched copy distributed under GPL-3.0-or-later, both authors named, modified files marked; the patch was submitted upstream as PR #4 — closed; per maintainer's comment in mrtoy-me/esphome-tas58xx#4 it is covered by his development branch and by the ESPHome core driver (esphome/esphome#19971). |
 
 ### Pin audit of 1 Oct 2026 — ESP32-S3 (U8)
 
@@ -1525,8 +1555,12 @@ assembly house, and it works as drawn: `EN` is active high (AP22802**A**; the B 
 low), V(IH) >= 1.5 V, V(IL) <= 0.5 V, reverse leakage with the switch disabled 0.01 uA typical.
 
 **Decided 2 Oct 2026: kept (VERIFIED NOT NEEDED).** The function is unchanged and the part is stocked
-(LCSC C211404, 14 426 in stock on 2 Oct 2026). Should it ever become unavailable, the successor AP22811
-has to be checked for pin assignment, enable polarity and current limit before it replaces U4.
+(LCSC C211404, 14 426 in stock on 2 Oct 2026). The data sheet names AP22811 as the part to use instead
+("USE AP22811"), but it says nothing about pin compatibility, and an earlier wording here ("the successor")
+went further than that source. Before a later production run, and not for rev A2, the following has to be
+established from the AP22811 data sheet and diodes.com: its own lifecycle status (one distributor listing
+also shows it as not for new designs), pin assignment and enable polarity and threshold against AP22802A,
+current limit, and an LCSC number with stock; AP22804 and AP22814 are to be compared as alternatives.
 
 ### Naming of the two board sides
 

@@ -34,6 +34,7 @@ for the device to be set into Hi-Z, configured, and only then put into PLAY.
 | `tas58xx_minimal.h` | `{ 0x03, 0x03 }` (PLAY) at the end of the table | `{ 0x03, 0x02 }` (Hi-Z) |
 | `tas58xx.h` | `ControlState tas58xx_control_state_;` — never initialised (the comment says "initialised in setup", `setup()` does not) | `ControlState tas58xx_control_state_{CTRL_HI_Z};` |
 | `tas58xx_minimal.h` | `{ 0x53, 0x00 }` — class-D loop bandwidth 80 kHz | `{ 0x53, 0x60 }` — 175 kHz (pin audit U14-B2, added 2 Oct 2026) |
+| `tas58xx.cpp` `update()` | every fault is cleared on the next 1 s update, DC and over-current included | DC and over-current faults (CHAN_FAULT bits 0–3) are not cleared; nothing is cleared while one is present, the output stays off until the device restarts (added 5 Oct 2026, as in the ESPHome core component; SLASEH5D 7.5.3.3.1/2: a DC fault re-trips only after 570 ms) |
 
 With both, `configure_registers_()` runs: `set_deep_sleep_off_()` (no write, state is Hi-Z) →
 `set_modulation_scheme_()` → `set_dac_mode_(PBTL)` → `set_analog_gain_(−12 dB)` →
@@ -61,4 +62,4 @@ work by Andriy Malyshenko (sonocotta) licensed under GPL-3.0, so the copy is dis
 authors and our two modifications marked with a dated notice at the top of each changed file
 (GPL-3.0 section 5 a). The assignment is in `REUSE.toml`. This file (`PATCH.md`) is our own text, MIT.
 
-The same change is prepared as a pull request for the upstream repository.
+The same change was submitted to the upstream repository as PR #4. Status: PR #4 closed; per maintainer's comment in mrtoy-me/esphome-tas58xx#4 the start-up order is covered by his development branch and by the ESPHome core driver (esphome/esphome#19971).

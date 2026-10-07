@@ -1,3 +1,6 @@
+// Modified 2026-10-05 by marceldale for nest-mini-v2-voice: DC and over-current faults are no longer cleared
+// automatically on the next update (output stays off until restart). Original:
+// https://github.com/mrtoy-me/esphome-tas58xx @ 89f29cf. See firmware/esphome/PATCH.md.
 #include "tas58xx.h"
 #include "tas58xx_minimal.h"
 #include "tas58xx_helpers.h"
@@ -216,8 +219,18 @@ void Tas58xxComponent::update() {
     return;
   }
 
+  // PATCH nest-mini-v2-voice (2026-10-05): DC and over-current faults (CHAN_FAULT bits 0-3) keep the output
+  // off until they are cleared (SLASEH5D 7.5.3.3.1/7.5.3.3.2). Clearing them on the next update would restart the
+  // output every second; a DC fault only re-trips after 570 ms, so DC could reach the speaker in between. They are
+  // therefore not cleared here: the output stays off until the device is restarted. FAULT_CLEAR resets all faults
+  // at once, so nothing is cleared while such a fault is present (as in the ESPHome core tas58xx component).
+  const bool output_off_fault = (this->tas58xx_faults_.channel_fault & 0x0F) != 0;
+  if (output_off_fault && this->is_new_channel_fault_) {
+    ESP_LOGW(TAG, "DC or over-current fault: output stays off - fix the cause, then restart the device");
+  }
+
   // is there a fault that should be cleared next update
-  this->is_fault_to_clear_ =
+  this->is_fault_to_clear_ = !output_off_fault &&
      ( this->tas58xx_faults_.is_fault_except_clock_fault || (this->tas58xx_faults_.clock_fault && (!this->ignore_clock_faults_when_clearing_faults_)) );
 
 

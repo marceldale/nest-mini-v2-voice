@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: 2026 marceldale
+# SPDX-License-Identifier: MIT
+#
+# Fertigungsdaten byte-genau speichern (keine Zeilenend-Umwandlung): die Erzeuger schreiben
+# Gerber/Excellon/CSV mit CRLF, und genau diese Bytes gehen an den Fertiger.
+fertigung/** -text

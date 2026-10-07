@@ -12,8 +12,8 @@ U11 from the ESP32-S3, without a JTAG adapter: it writes `firmware/xmos/ffva_v1.
 
 ## Operation (Home Assistant)
 
-1. Supply the board from 14 V (base plate or bench supply at TP18). On USB alone the write is refused
-   (see "Guard" below).
+1. Supply the board from USB or from 14 V (base plate or bench supply at TP18); see "Supply" below.
+   The device must have been up for 30 s, and its last restart must not have been a brown-out.
 2. Switch on **"XMOS-Flash freigeben"** (configuration entity). It switches itself off after 60 s.
 3. Press **"XMOS-Flash schreiben"** within those 60 s. The wake word, the voice assistant and media
    playback are stopped first.
@@ -51,20 +51,40 @@ run time. Cost: firmware image 2 283 639 → 2 600 735 bytes (32.0 % of an 8 MB 
   YAML; keep them free (the YAML comment lists them as reserved).
 * After a failure the wake word stays stopped until the next restart.
 
-## Guard: not on USB alone
+## Supply: USB alone or 14 V
 
-The button is refused unless the amplifier is configured and does **not** report PVDD under-voltage
-(`id(tas5805m_dac).is_failed()`, binary sensor `endstufe_pvdd_uv`). PVDD exists only on the 14 V
-rail (R66), so this is the "14 V present" test the board offers; there is no GPIO for it. The log names
-the condition that failed. **Open until the sample:** with an empty U11 the XU316 does not run, and
-`tas58xx` is then set up without I²S clocks — I²C works regardless, so the amplifier should not be
-marked failed and should not report PVDD under-voltage on 14 V; the bring-up check of the first board (working notes, HANDGRIFFE 6.8) tests exactly this.
+Since 2 Oct 2026 the write is allowed on **USB alone** as well as on 14 V (operator's decision; before
+that it was refused without PVDD). Conditions, checked in the YAML before the button is accepted:
 
-Load calculation for the record: electrically the write would also work on USB alone. The board
-needs about 0.66 A on USB with peaks of about 0.8 A in normal operation (CHANGES.md, M17); during a
-write the XU316 is in reset, audio is stopped, and U11 adds at most 25 mA (ICC4/ICC5). That stays
-below U18 (1.5 A) and the U4 current limit (≥ 2.2 A). The guard therefore follows the operator's rule
-(write on 14 V, as in the bring-up order), not a current limit; to allow USB, drop the lambda line.
+* **`+5V` present.** The board has no voltage sensor for `+5V` or VBUS that the ESP32 can read — the
+  only VBUS sense (`VBUS_DETEC`, Q1) goes to the XU316 (X1D09), which is held in reset while writing.
+  The check is therefore one of plausibility: the ESP32 runs from `+5V` through U7, has been up for at
+  least **30 s** with Wi-Fi (transmit bursts) and its last restart was **not a brown-out**
+  (`esp_reset_reason() != ESP_RST_BROWNOUT`). During the write the load is lower than in that
+  operation (table below), so a supply that carried it carries the write. That `+5V` (TP17) is above
+  4.5 V is measured once at bring-up (USB alone: TP17 ≈ VBUS − I × 50 mΩ, AP22802 R_DS(on)).
+* **All LEDs off** while writing: switched off before the write starts and held off by a 250 ms
+  `interval` for as long as `xmos_flasher.in_progress` is true (touch feedback included).
+
+**Load during the write**, from `+5V` (U7 and U6 efficiency taken as 90 % and 85 % — an assumption, not a
+datasheet figure for this operating point):
+
+| Consumer | Datasheet | from `+5V` |
+|---|---|---|
+| ESP32-S3R8, Wi-Fi connected (receive) | RX 88 mA (ESP32-S3 datasheet v2.2, table 5-8, CPU idle) | 65 mA |
+| ESP32-S3R8, CPU busy (SPI, MD5) | + 33 mA (table 5-9: dual core 66.2 mA against WAITI 32.9 mA at 240 MHz) | 24 mA |
+| ESP32-S3R8, transmit burst | TX 802.11b at 21 dBm, 340 mA peak (table 5-8); the YAML sends at 8.5 dBm | + 185 mA peak |
+| U11 W25Q32JV, page program / sector erase | I_CC5 page program / I_CC6 sector erase **25 mA** max., 20 mA typ. (W25Q32JV datasheet rev. G, DC electrical characteristics) | 18 mA |
+| rest of `3V3` (U9 flash, VDDIO, `1V8`, MPR121, TAS5805M DVDD) | flash 10 mA, DVDD 18 mA (SLASEH5D 6.5), rest estimated 20 mA | 35 mA |
+| XU316 core `VDD` 0.9 V, **in reset** | no reset figure in the datasheet; bounded by I(VDD) typ. 300 mA running (XM014429B fig. 36) | ≤ 64 mA |
+| microphones `VMIC` | a few mA (10 mA taken) | 10 mA |
+| LEDs | off | 0 |
+| amplifier | stopped; PVDD absent on USB | 0 |
+| **Sum** | | **≈ 0.22 A typical, ≈ 0.40 A with a transmit burst — below 0.5 A** |
+
+U4 (current limit ≥ 2.2 A, AP22802) and U18 (1.5 A) are far above this. A USB 2.0 port without power
+negotiation supplies 500 mA, a USB 3.x port 900 mA; the receptacle presents 5.1 kΩ on CC (R1/R5).
+
 
 ## Origin and licence
 

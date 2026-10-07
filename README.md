@@ -8,7 +8,8 @@ that was changed, and why, is in [CHANGES.md](CHANGES.md); the people and projec
 stands on are named under [Credits](#credits).
 
 > [!WARNING]
-> **Status (2 Oct 2026): rev A2 ordered (2 boards, JLCPCB, 2 Oct 2026).** Every change has been
+> **Status (5 Oct 2026): rev A2 in production at JLCPCB (2 boards, ordered 2 Oct 2026, completion
+> expected around 14 Oct 2026).** Every change has been
 > verified on paper only — netlist, ERC, DRC with schematic parity, datasheets, firmware source.
 > The rotations of all 31 changed or new parts were checked in JLCPCB's assembly preview, and the
 > board was ordered with the two fixed options (via filling, ENIG). **Nothing has been checked on
@@ -66,8 +67,9 @@ prototype stage (see status above). No affiliation with Google.
   (286 720 bytes), checked against its MD5 and read back; everything after the image must read
   FFh. An image that a later DFU update put there is replaced by 1.3.1 as well. The data partition
   above 1 MiB is not touched, and the flash status registers are only read, never written — a
-  write-protected flash is reported, not unlocked. The write is refused on USB alone (no 14 V, no
-  PVDD), needs the enable switch first and takes about 15 s; on success the ESP32 restarts.
+  write-protected flash is reported, not unlocked. It works on USB alone or on 14 V (all LEDs
+  are switched off meanwhile; load below 0.5 A), needs the enable switch first and takes about 15 s;
+  on success the ESP32 restarts.
 
 * **Audio path as on Voice PE.** ESP32 feeds the amplifier and the echo reference on one
   line; XU316 is the clock master. Works with the unmodified Voice PE XMOS firmware.
@@ -191,7 +193,7 @@ name would not fit on a 68 mm board.
 | *(no marking)* | TP14 | `ELEC2` | LED side | 159.20 / 89.90 | touch electrode, right |
 | *(no marking)* | TP15 | `ELEC1` | LED side | 135.82 / 119.53 | touch electrode, centre |
 | *(no marking)* | TP16 | `ELEC0` | LED side | 114.20 / 88.90 | touch electrode, left |
-| `5V` | TP17 | `+5V` | microphone side | 122.42 / 105.90 | about 5 V, **after** U18 — 55…65 mV below TP3 under load |
+| `5V` | TP17 | `+5V` | microphone side | 122.42 / 105.55 | about 5 V, **after** U18 — below TP3 by I × 79 mΩ (LM66100 R_ON): ≈ 8 mV per 100 mA, 55…65 mV at 0.7…0.8 A |
 | `14V` | TP18 | `+14V` | microphone side | 143.90 / 109.43 | 14 V from the base plate |
 | `RST` | TP19 | `ESP_RST` | microphone side | 118.58 / 79.30 | logic; low = ESP32 in reset |
 | `BOOT` | TP20 | `ESP_BOOT` | microphone side | 121.84 / 81.75 | logic; low at power-up = boot mode |
@@ -203,7 +205,8 @@ The three touch points carry no silkscreen: they sit inside the electrode rings 
 where any lettering would end up on copper. Their names are `T_R`, `T_C` and `T_L` in the schematic.
 
 **The pair TP3 / TP17 is the one to measure first.** TP3 sits before the ideal diode U18, TP17
-after it. Under load the difference should be about 55…65 mV; in USB-only operation TP3 should read
+after it. The difference is the load current times U18's on-resistance (79 mΩ typical, LM66100 datasheet):
+under 20 mV at idle, about 55…65 mV at 0.7…0.8 A; in USB-only operation TP3 should read
 roughly 0 V, because the 14 V rail is then dead and the diode blocks the path back into it.
 
 ## Connectors
@@ -260,6 +263,13 @@ VREF on pin 6; a board made from an older revision needs an adapter.
 
 
 ## Before bring-up
+
+> [!NOTE]
+> **Amplifier driver.** The ESPHome core component `tas58xx` (TAS5805M) arrives with ESPHome 2026.10.
+> Until then use ESPHome `dev`, or the patched copy under `firmware/esphome/components/tas58xx`, which
+> `nest-mini-v2-voice.yaml` loads by default and which builds with ESPHome 2026.9.0. A configuration for
+> the core component is [`nest-mini-v2-voice-kerntreiber.yaml`](nest-mini-v2-voice-kerntreiber.yaml)
+> (ESPHome `dev` / 2026.10 or later; it adds the 175 kHz loop bandwidth the core component does not set yet).
 
 > [!CAUTION]
 > **Do not burn `EFUSE_STRAP_JTAG_SEL` on the ESP32-S3.** Rev A2 uses GPIO3 and GPIO39 to
